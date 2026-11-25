@@ -213,5 +213,4 @@ if (!process.env.VERCEL) {
   process.on("SIGTERM", handleShutdown);
 }
 
-module.exports = app;
 export default app;
