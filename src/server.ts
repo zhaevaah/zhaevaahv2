@@ -23,25 +23,7 @@ import { getCategories } from "./controllers/productController";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Security & Utility Middlewares
-app.use(
-  helmet({
-    crossOriginResourcePolicy: { policy: "cross-origin" },
-  })
-);
-app.use(morgan("dev"));
-app.use(cookieParser());
-app.use(
-  express.json({
-    limit: "10mb",
-    verify: (req: any, _res, buf) => {
-      req.rawBody = buf;
-    },
-  })
-);
-app.use(express.urlencoded({ extended: true, limit: "10mb" }));
-
-// Dynamic CORS configuration for Frontend & Admin
+// Dynamic CORS configuration for Frontend, Admin & Vercel Deployments
 const allowedOrigins = [
   process.env.CLIENT_URL || "http://localhost:3000",
   process.env.ADMIN_URL || "http://localhost:3001",
@@ -59,21 +41,61 @@ const allowedOrigins = [
   "https://www.admin.zhaevaah.vercel.app",
 ];
 
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    // Allow server-to-server, curl, Postman, or mobile apps with no origin
+    if (!origin) {
+      return callback(null, true);
+    }
+    // Allow explicitly listed origins, any vercel preview deployment, or localhost
+    if (
+      allowedOrigins.includes(origin) ||
+      origin.endsWith(".vercel.app") ||
+      origin.endsWith(".zhaevaah.com") ||
+      origin.includes("localhost") ||
+      origin.includes("127.0.0.1")
+    ) {
+      return callback(null, origin);
+    }
+    // Fallback: reflect requesting origin so credentials work
+    return callback(null, origin);
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "X-Requested-With",
+    "Accept",
+    "Origin",
+    "Access-Control-Request-Method",
+    "Access-Control-Request-Headers",
+  ],
+  exposedHeaders: ["Content-Range", "X-Content-Range"],
+  optionsSuccessStatus: 204,
+};
+
+// 1. CORS MUST be the very first middleware to intercept preflight requests
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
+// Security & Utility Middlewares
 app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, or Postman)
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(null, true); // Allow during development
-      }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
   })
 );
+app.use(morgan("dev"));
+app.use(cookieParser());
+app.use(
+  express.json({
+    limit: "10mb",
+    verify: (req: any, _res, buf) => {
+      req.rawBody = buf;
+    },
+  })
+);
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // Health Check & Root
 app.get("/", (req: Request, res: Response) => {
@@ -164,29 +186,32 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-// Start Server
-const server = app.listen(Number(PORT), "0.0.0.0", () => {
-  console.log(`\n======================================================`);
-  console.log(`✨ ZHAEVAAH Fine Jewellery API Server Running!`);
-  console.log(`📍 Endpoint: http://localhost:${PORT}`);
-  console.log(`⚡ Razorpay Webhook URL: http://localhost:${PORT}/api/webhook/razorpay`);
-  console.log(`💎 Frontend: ${process.env.CLIENT_URL || "http://localhost:3000"}`);
-  console.log(`👑 Admin Dashboard: ${process.env.ADMIN_URL || "http://localhost:3001"}`);
-  console.log(`======================================================\n`);
-  ensureDefaultAdmins().catch((e) => console.warn("[Startup Admins]", e.message));
-});
-
-// Graceful Shutdown
-const handleShutdown = async () => {
-  console.log("\n[Server] Shutting down gracefully...");
-  server.close(async () => {
-    await prisma.$disconnect();
-    console.log("[Server] Database connection closed.");
-    process.exit(0);
+// Start Server (Only listen when running standalone, not inside Vercel serverless functions)
+if (!process.env.VERCEL) {
+  const server = app.listen(Number(PORT), "0.0.0.0", () => {
+    console.log(`\n======================================================`);
+    console.log(`✨ ZHAEVAAH Fine Jewellery API Server Running!`);
+    console.log(`📍 Endpoint: http://localhost:${PORT}`);
+    console.log(`⚡ Razorpay Webhook URL: http://localhost:${PORT}/api/webhook/razorpay`);
+    console.log(`💎 Frontend: ${process.env.CLIENT_URL || "http://localhost:3000"}`);
+    console.log(`👑 Admin Dashboard: ${process.env.ADMIN_URL || "http://localhost:3001"}`);
+    console.log(`======================================================\n`);
+    ensureDefaultAdmins().catch((e) => console.warn("[Startup Admins]", e.message));
   });
-};
 
-process.on("SIGINT", handleShutdown);
-process.on("SIGTERM", handleShutdown);
+  // Graceful Shutdown
+  const handleShutdown = async () => {
+    console.log("\n[Server] Shutting down gracefully...");
+    server.close(async () => {
+      await prisma.$disconnect();
+      console.log("[Server] Database connection closed.");
+      process.exit(0);
+    });
+  };
 
+  process.on("SIGINT", handleShutdown);
+  process.on("SIGTERM", handleShutdown);
+}
+
+module.exports = app;
 export default app;
