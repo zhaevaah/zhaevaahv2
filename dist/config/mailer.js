@@ -361,7 +361,7 @@ const sendWelcomeEmail = async (data) => {
           </div>
           <div class="footer">
             <p style="margin: 0 0 6px;">ZHAEVAAH Fine Jewellery Atelier • Mumbai, Maharashtra, India</p>
-            <p style="margin: 0;">You received this email because you created an account or placed your first order with ZHAEVAAH.</p>
+            <p style="margin: 0;">You received this email because you created an account with ZHAEVAAH.</p>
           </div>
         </div>
       </body>

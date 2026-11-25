@@ -178,26 +178,6 @@ const verifyPaymentAndPlaceOrder = async (req, res) => {
         }).catch((emailErr) => {
             console.error("[Order Controller] Background email send failed:", emailErr);
         });
-        // 2. If first-time customer placing their first order, also send royal welcome email
-        prisma_1.default.order.count({
-            where: {
-                OR: [
-                    ...(order.userId ? [{ userId: order.userId }] : []),
-                    { customerEmail: order.customerEmail },
-                ],
-            },
-        }).then((orderCount) => {
-            if (orderCount <= 1) {
-                (0, mailer_1.sendWelcomeEmail)({
-                    name: order.customerName,
-                    email: order.customerEmail,
-                }).catch((wErr) => {
-                    console.error("[Order Controller] Welcome email send error:", wErr);
-                });
-            }
-        }).catch((countErr) => {
-            console.warn("[Order Controller] Order count check failed:", countErr.message);
-        });
         res.status(201).json({
             success: true,
             message: "Order placed successfully! Confirmation email has been sent.",

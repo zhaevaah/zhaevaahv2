@@ -53,8 +53,8 @@ const allowedOrigins = [
   "https://www.zhaevaah.com",
   "https://zhaevaah.com",
   "https://root.zhaevaah.com",
-  "https://zhaevaah.vercel.app",
-  "https://www.zhaevaah.vercel.app",
+  "https://zhaevaahv2.vercel.app",
+  "https://www.zhaevaahv2.vercel.app",
   "https://admin.zhaevaah.vercel.app",
   "https://www.admin.zhaevaah.vercel.app",
 ];

@@ -6,7 +6,7 @@ import {
   getRazorpayKeyId,
   getRazorpayKeySecret,
 } from "../config/razorpay";
-import { sendOrderConfirmationEmail, sendWelcomeEmail } from "../config/mailer";
+import { sendOrderConfirmationEmail } from "../config/mailer";
 import { AuthRequest } from "../middleware/auth";
 import { webhookConfirmedPayments } from "./webhookController";
 
@@ -206,27 +206,6 @@ export const verifyPaymentAndPlaceOrder = async (req: AuthRequest, res: Response
       trackingNumber: order.trackingNumber || undefined,
     }).catch((emailErr) => {
       console.error("[Order Controller] Background email send failed:", emailErr);
-    });
-
-    // 2. If first-time customer placing their first order, also send royal welcome email
-    prisma.order.count({
-      where: {
-        OR: [
-          ...(order.userId ? [{ userId: order.userId }] : []),
-          { customerEmail: order.customerEmail },
-        ],
-      },
-    }).then((orderCount) => {
-      if (orderCount <= 1) {
-        sendWelcomeEmail({
-          name: order.customerName,
-          email: order.customerEmail,
-        }).catch((wErr) => {
-          console.error("[Order Controller] Welcome email send error:", wErr);
-        });
-      }
-    }).catch((countErr) => {
-      console.warn("[Order Controller] Order count check failed:", countErr.message);
     });
 
     res.status(201).json({
