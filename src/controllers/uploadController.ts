@@ -191,7 +191,7 @@ export const uploadMultiple = async (req: Request, res: Response): Promise<void>
       success: true,
       count: results.length,
       message: `Successfully optimized and uploaded ${results.length} images in WebP format.`,
-      urls: results.map((r) => r.url),
+      urls: results.map((r: any) => r.url),
       files: results,
     });
   } catch (error: any) {

@@ -587,7 +587,7 @@ const getAdminUsers = async (req, res) => {
             orderBy: { createdAt: "desc" },
         });
         const userList = users.map((u) => {
-            const totalSpent = u.orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+            const totalSpent = (u.orders || []).reduce((sum, o) => sum + (o.totalAmount || 0), 0);
             return {
                 id: u.id,
                 name: u.name,
@@ -629,7 +629,7 @@ const getAdminUserDetails = async (req, res) => {
             res.status(404).json({ success: false, message: "User not found." });
             return;
         }
-        const totalSpent = user.orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+        const totalSpent = (user.orders || []).reduce((sum, o) => sum + (o.totalAmount || 0), 0);
         res.status(200).json({
             success: true,
             user: {
@@ -669,7 +669,7 @@ const updateAdminUser = async (req, res) => {
             },
         });
         await (0, exports.logAdminAction)("UPDATE_USER", "USER", updated.id, req.user?.email || "admin@zhaevaah.com", `Updated profile for patron ${updated.email} (${updated.name}, Role: ${updated.role})`);
-        const totalSpent = updated.orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+        const totalSpent = (updated.orders || []).reduce((sum, o) => sum + (o.totalAmount || 0), 0);
         res.status(200).json({
             success: true,
             message: "Patron profile updated successfully.",

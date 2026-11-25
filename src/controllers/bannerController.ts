@@ -94,14 +94,14 @@ export const getBanners = async (req: Request, res: Response): Promise<void> => 
       });
     } catch (dbErr: any) {
       console.warn("[Database Banner Query Warning, using fallback]:", dbErr.message);
-      banners = FALLBACK_BANNERS.filter((b) => {
+      banners = FALLBACK_BANNERS.filter((b: any) => {
         if (type) return b.type === String(type).toUpperCase();
         return b.isActive;
       });
     }
 
     if (!banners || banners.length === 0) {
-      banners = FALLBACK_BANNERS.filter((b) => {
+      banners = FALLBACK_BANNERS.filter((b: any) => {
         if (type) return b.type === String(type).toUpperCase();
         return b.isActive;
       });
@@ -109,12 +109,12 @@ export const getBanners = async (req: Request, res: Response): Promise<void> => 
 
     // Group banners by type for easy frontend consumption
     const grouped = {
-      hero: banners.filter((b) => b.type === "HERO"),
-      adDouble: banners.filter((b) => b.type === "AD_DOUBLE"),
-      adSingle: banners.filter((b) => b.type === "AD_SINGLE"),
-      promoTop: banners.filter((b) => b.type === "PROMO_TOP"),
-      braceletHotsell: banners.filter((b) => b.type === "BRACELET_HOTSELL"),
-      dropCut: banners.filter((b) => b.type === "DROP_CUT"),
+      hero: banners.filter((b: any) => b.type === "HERO"),
+      adDouble: banners.filter((b: any) => b.type === "AD_DOUBLE"),
+      adSingle: banners.filter((b: any) => b.type === "AD_SINGLE"),
+      promoTop: banners.filter((b: any) => b.type === "PROMO_TOP"),
+      braceletHotsell: banners.filter((b: any) => b.type === "BRACELET_HOTSELL"),
+      dropCut: banners.filter((b: any) => b.type === "DROP_CUT"),
       all: banners,
     };
 
@@ -123,10 +123,10 @@ export const getBanners = async (req: Request, res: Response): Promise<void> => 
     console.error("[Get Banners Error]:", error);
     // Return fallback grouped banners to prevent storefront 500 crashes
     const fallbackGrouped = {
-      hero: FALLBACK_BANNERS.filter((b) => b.type === "HERO"),
-      adDouble: FALLBACK_BANNERS.filter((b) => b.type === "AD_DOUBLE"),
+      hero: FALLBACK_BANNERS.filter((b: any) => b.type === "HERO"),
+      adDouble: FALLBACK_BANNERS.filter((b: any) => b.type === "AD_DOUBLE"),
       adSingle: [],
-      promoTop: FALLBACK_BANNERS.filter((b) => b.type === "PROMO_TOP"),
+      promoTop: FALLBACK_BANNERS.filter((b: any) => b.type === "PROMO_TOP"),
       braceletHotsell: [],
       dropCut: [],
       all: FALLBACK_BANNERS,

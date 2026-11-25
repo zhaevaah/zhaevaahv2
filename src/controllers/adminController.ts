@@ -647,7 +647,7 @@ export const updateOrderStatus = async (req: AuthRequest, res: Response): Promis
       current: true,
     };
 
-    timeline = timeline.map((step) => ({
+    timeline = timeline.map((step: any) => ({
       ...step,
       current: false,
     }));
@@ -740,8 +740,8 @@ export const getAdminUsers = async (req: AuthRequest, res: Response): Promise<vo
       orderBy: { createdAt: "desc" },
     });
 
-    const userList = users.map((u) => {
-      const totalSpent = u.orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const userList = users.map((u: any) => {
+      const totalSpent = (u.orders || []).reduce((sum: number, o: any) => sum + (o.totalAmount || 0), 0);
       return {
         id: u.id,
         name: u.name,
@@ -786,7 +786,7 @@ export const getAdminUserDetails = async (req: AuthRequest, res: Response): Prom
       return;
     }
 
-    const totalSpent = user.orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const totalSpent = (user.orders || []).reduce((sum: number, o: any) => sum + (o.totalAmount || 0), 0);
 
     res.status(200).json({
       success: true,
@@ -846,7 +846,7 @@ export const updateAdminUser = async (req: AuthRequest, res: Response): Promise<
       `Updated profile for patron ${updated.email} (${updated.name}, Role: ${updated.role})`
     );
 
-    const totalSpent = updated.orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const totalSpent = (updated.orders || []).reduce((sum: number, o: any) => sum + (o.totalAmount || 0), 0);
 
     res.status(200).json({
       success: true,
@@ -918,7 +918,7 @@ export const getAdminTransactions = async (req: AuthRequest, res: Response): Pro
         take: 50,
       });
 
-      const synthetic = orders.map((o) => ({
+      const synthetic = orders.map((o: any) => ({
         id: o.id,
         transactionNumber: `TXN-${o.orderNumber.replace("ZH-", "")}-${Math.floor(100 + Math.random() * 900)}`,
         orderNumber: o.orderNumber,
@@ -971,7 +971,7 @@ export const getAdminAnalytics = async (req: AuthRequest, res: Response): Promis
       }),
     ]);
 
-    const totalRevenue = paidOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const totalRevenue = paidOrders.reduce((sum: number, o: any) => sum + (o.totalAmount || 0), 0);
 
     // Generate daily sales for the last 7 days
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];

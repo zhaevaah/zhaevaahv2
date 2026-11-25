@@ -258,14 +258,14 @@ export const getCategories = async (req: Request, res: Response): Promise<void> 
     });
 
     const countMap: { [key: string]: number } = {};
-    products.forEach((p) => {
+    products.forEach((p: any) => {
       const nameKey = p.category?.toLowerCase().trim();
       if (nameKey) {
         countMap[nameKey] = (countMap[nameKey] || 0) + 1;
       }
     });
 
-    const categories = dbCategories.map((c) => {
+    const categories = dbCategories.map((c: any) => {
       const count =
         countMap[c.name.toLowerCase().trim()] ||
         countMap[c.slug.toLowerCase().trim()] ||
