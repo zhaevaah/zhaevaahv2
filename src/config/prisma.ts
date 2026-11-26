@@ -38,8 +38,7 @@ export const prisma =
     log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"],
   });
 
-if (process.env.NODE_ENV !== "production") {
-  global.__prisma = prisma;
-}
+// Cache prisma client globally across serverless invocations to avoid connection pool exhaustion
+global.__prisma = prisma;
 
 export default prisma;

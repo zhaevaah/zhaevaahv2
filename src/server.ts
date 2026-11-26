@@ -23,6 +23,31 @@ import { getCategories } from "./controllers/productController";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Instant Preflight & Universal CORS Interceptor (Guarantees immediate 204 for all OPTIONS preflights)
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const origin = req.headers.origin;
+  if (origin) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD"
+    );
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization, X-Requested-With, Accept, Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
+    );
+    res.setHeader("Access-Control-Expose-Headers", "Content-Range, X-Content-Range");
+  }
+
+  // Preflight OPTIONS requests exit immediately with 204 No Content
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
+  next();
+});
+
 // Dynamic CORS configuration for Frontend, Admin & Vercel Deployments
 const allowedOrigins = [
   process.env.CLIENT_URL || "http://localhost:3000",
@@ -55,10 +80,10 @@ const corsOptions: cors.CorsOptions = {
       origin.includes("localhost") ||
       origin.includes("127.0.0.1")
     ) {
-      return callback(null, origin);
+      return callback(null, true);
     }
     // Fallback: reflect requesting origin so credentials work
-    return callback(null, origin);
+    return callback(null, true);
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],

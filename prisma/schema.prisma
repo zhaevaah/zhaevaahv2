@@ -115,6 +115,7 @@ model Banner {
   subtitle     String?
   type         String   // "HERO" | "AD_DOUBLE" | "AD_SINGLE" | "PROMO_TOP" | "BRACELET_HOTSELL" | "DROP_CUT"
   image        String
+  mobileImage  String?
   productImage String?
   link         String   @default("/shop")
   ctaText      String   @default("SHOP NOW")
