@@ -3,7 +3,77 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+
+interface CircularCategoryItem {
+  id: string;
+  name: string;
+  tagline: string;
+  image: string;
+  link: string;
+  badge?: string;
+}
+
+const CIRCULAR_CATEGORIES: CircularCategoryItem[] = [
+  {
+    id: "rings",
+    name: "Rings",
+    tagline: "Diamond & Gold",
+    image: "/category/ring.webp",
+    link: "/shop?category=Diamond%20Rings",
+  },
+  {
+    id: "bracelets",
+    name: "Bracelets",
+    tagline: "Tennis & Charm",
+    image: "/category/bracelet.webp",
+    link: "/shop?category=Diamond%20Bracelets",
+  },
+  {
+    id: "neck-chains",
+    name: "Neck Chains",
+    tagline: "Pendants & Chains",
+    image: "/category/chain.webp",
+    link: "/shop?category=Necklaces%20%26%20Pendants",
+  },
+  {
+    id: "necklace-sets",
+    name: "Necklace Sets",
+    tagline: "Bridal & Heritage",
+    image: "/category/necklace.webp",
+    link: "/shop?category=Wedding%20%26%20Bridal%20Sets",
+  },
+  {
+    id: "bangles",
+    name: "Bangles",
+    tagline: "Artisanal 18kt",
+    image: "/category/bangles.webp",
+    link: "/shop?category=Diamond%20Bracelets",
+  },
+  {
+    id: "mens-rings",
+    name: "Men's Rings",
+    tagline: "Signets & Bands",
+    image: "/category/men_ring.webp",
+    link: "/men?category=Men%27s%20Rings",
+    badge: "MEN",
+  },
+  {
+    id: "mens-bracelets",
+    name: "Men's Bracelets",
+    tagline: "Cuban & Kadas",
+    image: "/category/men_bracelet.webp",
+    link: "/men?category=Men%27s%20Bracelets%20%26%20Kadas",
+    badge: "MEN",
+  },
+  {
+    id: "mens-chains",
+    name: "Men's Chains",
+    tagline: "Solid Gold Links",
+    image: "/category/men_chain.webp",
+    link: "/men?category=Chains%20%26%20Pendants",
+    badge: "MEN",
+  },
+];
 
 const DEFAULT_GRID = [
   {
@@ -50,118 +120,90 @@ export default function CategoryGrid() {
     return () => window.removeEventListener("zhaevaah-home-updated", loadCustom);
   }, []);
 
-  const card1 = grid[0] || DEFAULT_GRID[0];
-  const card2 = grid[1] || DEFAULT_GRID[1];
-  const card3 = grid[2] || DEFAULT_GRID[2];
+  const promoCards = [
+    grid[0] || DEFAULT_GRID[0],
+    grid[1] || DEFAULT_GRID[1],
+    grid[2] || DEFAULT_GRID[2],
+  ];
 
   return (
-    <section id="categories" className="w-full py-6 sm:py-10 md:py-16 bg-white">
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-6">
-          
-          {/* 1. Left Tall Banner: Diamond Rings */}
-          <div className="md:col-span-6 group relative bg-[#F7F6F4] overflow-hidden min-h-[190px] sm:min-h-[280px] md:min-h-[480px] flex items-center">
-            {/* Background / Side Image */}
-            <div className="absolute inset-0">
-              <Image
-                src={card1.image}
-                alt={card1.title}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover object-left-bottom sm:object-center transition-transform duration-700 ease-out group-hover:scale-105"
+    <section id="categories" className="w-full pt-6 sm:pt-8 md:pt-10 pb-8 sm:pb-10 md:pb-12 bg-white">
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* ── Circular Categories Full Width Ribbon ── */}
+        <div className="w-full mb-8 sm:mb-10 md:mb-12">
+          <div className="flex items-start justify-start md:justify-between gap-3 sm:gap-5 md:gap-4 lg:gap-6 xl:gap-8 overflow-x-auto no-scrollbar scrollbar-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden scroll-smooth py-1 px-1 -mx-4 px-4 sm:mx-0 sm:px-1">
+            {CIRCULAR_CATEGORIES.map((cat) => (
+              <Link
+                key={cat.id}
+                href={cat.link}
+                className="flex flex-col items-center flex-shrink-0 group cursor-pointer w-[72px] sm:w-[84px] md:w-[94px] lg:w-[108px]"
+              >
+                {/* Outer Ring with subtle gold gradient & hover shine */}
+                <div className="relative w-[64px] h-[64px] sm:w-[76px] sm:h-[76px] md:w-[84px] md:h-[84px] lg:w-[94px] lg:h-[94px] rounded-full p-[2px] bg-gradient-to-tr from-[#EAE3D5] via-[#B8933F]/40 to-[#EAE3D5] group-hover:from-[#B8933F] group-hover:via-[#E8D9B5] group-hover:to-[#9E792B] transition-all duration-300 shadow-none group-hover:shadow-md flex items-center justify-center">
+                  {/* Inner Image Container */}
+                  <div className="w-full h-full rounded-full overflow-hidden bg-[#FAF7F2] relative">
+                    <Image
+                      src={cat.image}
+                      alt={cat.name}
+                      fill
+                      sizes="(max-width: 640px) 64px, 94px"
+                      className="object-cover object-center group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+
+                  {/* Optional Badge for Men's Collection */}
+                  {cat.badge && (
+                    <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-[#1C1208] text-[#E8D9B5] text-[7.5px] sm:text-[8.5px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider border border-[#B8933F]/40 shadow-xs z-10 leading-none">
+                      {cat.badge}
+                    </span>
+                  )}
+                </div>
+
+                {/* Category Title */}
+                <span className="font-montserrat text-[11px] sm:text-xs font-semibold text-[#1C1208] group-hover:text-[#B8933F] text-center mt-2 block leading-tight tracking-tight transition-colors line-clamp-1 max-w-[72px] sm:max-w-[84px] md:max-w-[94px] lg:max-w-[108px]">
+                  {cat.name}
+                </span>
+
+                {/* Tagline */}
+                <span className="font-poppins text-[9px] sm:text-[10px] text-[#8C827A] text-center block mt-0.5 leading-tight tracking-tight line-clamp-1 max-w-[72px] sm:max-w-[84px] md:max-w-[94px] lg:max-w-[108px]">
+                  {cat.tagline}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* ── 3. Editorial Promo 3-Tile Banner Cards (Pure Image-Only: Horizontal Scroll Slider on Mobile, 3-Column on Big Screen) ── */}
+        <div className="relative w-full">
+          <div className="flex md:grid overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden scroll-smooth gap-3 sm:gap-4 md:gap-5 lg:gap-6 md:grid-cols-3 -mx-4 px-4 md:mx-0 md:px-0 pb-2 md:pb-0">
+            {promoCards.map((card, idx) => (
+              <Link
+                key={card.link + idx}
+                href={card.link}
+                aria-label={card.title || `Category Banner ${idx + 1}`}
+                className="group relative block shrink-0 w-[82vw] sm:w-[320px] md:w-auto snap-center aspect-[2.4/1] sm:aspect-[2.4/1] md:aspect-[2.3/1] rounded-xl sm:rounded-2xl overflow-hidden border border-[#EAE3D5]/80 bg-[#FAF9F7] shadow-xs hover:shadow-md transition-all duration-300 active:scale-[0.99]"
+              >
+                <Image
+                  src={card.image}
+                  alt={card.title || `Promotional banner ${idx + 1}`}
+                  fill
+                  sizes="(max-width: 768px) 82vw, 33vw"
+                  className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                />
+              </Link>
+            ))}
+          </div>
+
+          {/* Mobile Swipe Indicator Dots */}
+          <div className="flex md:hidden justify-center items-center gap-1.5 mt-2.5">
+            {promoCards.map((_, idx) => (
+              <span
+                key={idx}
+                className="w-1.5 h-1.5 rounded-full bg-[#D6CEC1]"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#F7F6F4]/40 to-[#F7F6F4]/95 md:to-[#F7F6F4]/90" />
-            </div>
-
-            {/* Content overlay on right */}
-            <div className="relative z-10 ml-auto w-full max-w-[210px] sm:max-w-[280px] md:max-w-[320px] p-4 sm:p-7 md:p-10 text-right md:text-left flex flex-col justify-center">
-              <span className="text-[10px] sm:text-xs uppercase font-medium tracking-[0.2em] text-[#767069] block mb-1 sm:mb-2 md:mb-3">
-                {card1.subtitle}
-              </span>
-              <h3 className="font-serif-luxury text-lg sm:text-2xl md:text-3xl lg:text-[32px] font-bold text-[#1C1208] leading-tight mb-2 sm:mb-4 group-hover:text-[#B8933F] transition-colors">
-                {card1.title}
-              </h3>
-              <div>
-                <Link
-                  href={card1.link}
-                  className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs uppercase font-medium tracking-[0.16em] text-[#1C1208] group-hover:text-[#B8933F] transition-colors border-b border-[#1C1208] group-hover:border-[#B8933F] pb-0.5 sm:pb-1"
-                >
-                  <span>{card1.cta || "SHOP NOW"}</span>
-                  <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </div>
-            </div>
+            ))}
           </div>
-
-          {/* Right Column: 2 stacked landscape banners */}
-          <div className="md:col-span-6 flex flex-col gap-3 sm:gap-6">
-            
-            {/* 2. Top Right Banner: Diamond Bracelets */}
-            <div className="group relative bg-[#F7F6F4] overflow-hidden min-h-[140px] sm:min-h-[190px] md:min-h-[228px] flex items-center">
-              <div className="absolute inset-0">
-                <Image
-                  src={card2.image}
-                  alt={card2.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover object-left sm:object-center transition-transform duration-700 ease-out group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#F7F6F4]/30 to-[#F7F6F4]/90" />
-              </div>
-
-              <div className="relative z-10 ml-auto w-full max-w-[200px] sm:max-w-[260px] md:max-w-[320px] p-4 sm:p-6 md:p-8 text-right md:text-left flex flex-col justify-center">
-                <span className="text-[10px] sm:text-[11px] uppercase font-medium tracking-[0.2em] text-[#767069] block mb-1 sm:mb-2">
-                  {card2.subtitle}
-                </span>
-                <h3 className="font-serif-luxury text-base sm:text-xl md:text-2xl font-bold text-[#1C1208] leading-snug mb-2 sm:mb-3 group-hover:text-[#B8933F] transition-colors">
-                  {card2.title}
-                </h3>
-                <div>
-                  <Link
-                    href={card2.link}
-                    className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs uppercase font-medium tracking-[0.16em] text-[#1C1208] group-hover:text-[#B8933F] transition-colors border-b border-[#1C1208] group-hover:border-[#B8933F] pb-0.5 sm:pb-1"
-                  >
-                    <span>{card2.cta || "SHOP NOW"}</span>
-                    <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* 3. Bottom Right Banner: Diamond Pendant */}
-            <div className="group relative bg-[#F7F6F4] overflow-hidden min-h-[140px] sm:min-h-[190px] md:min-h-[228px] flex items-center">
-              <div className="absolute inset-0">
-                <Image
-                  src={card3.image}
-                  alt={card3.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover object-left sm:object-center transition-transform duration-700 ease-out group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#F7F6F4]/30 to-[#F7F6F4]/90" />
-              </div>
-
-              <div className="relative z-10 ml-auto w-full max-w-[200px] sm:max-w-[260px] md:max-w-[320px] p-4 sm:p-6 md:p-8 text-right md:text-left flex flex-col justify-center">
-                <span className="text-[10px] sm:text-[11px] uppercase font-medium tracking-[0.2em] text-[#767069] block mb-1 sm:mb-2">
-                  {card3.subtitle}
-                </span>
-                <h3 className="font-serif-luxury text-base sm:text-xl md:text-2xl font-bold text-[#1C1208] leading-snug mb-2 sm:mb-3 group-hover:text-[#B8933F] transition-colors">
-                  {card3.title}
-                </h3>
-                <div>
-                  <Link
-                    href={card3.link}
-                    className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs uppercase font-medium tracking-[0.16em] text-[#1C1208] group-hover:text-[#B8933F] transition-colors border-b border-[#1C1208] group-hover:border-[#B8933F] pb-0.5 sm:pb-1"
-                  >
-                    <span>{card3.cta || "SHOP NOW"}</span>
-                    <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
         </div>
       </div>
     </section>

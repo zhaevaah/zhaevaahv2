@@ -29,6 +29,7 @@ import {
   apiResetPassword,
   apiCompleteProfile,
 } from "../../lib/api";
+import { formatAutoDate } from "../../lib/formatters";
 import GoogleSignInButton from "../../components/GoogleSignInButton";
 
 type AuthMode =
@@ -49,21 +50,17 @@ interface CarouselSlide {
 const AUTH_SLIDES: CarouselSlide[] = [
   {
     id: 1,
-    image: "/images/hero_woman.jpg",
-    tagline: "Timeless Golden Brilliance",
+    image: "/images/founder_esha_sasikumar.webp",
+    tagline: "Esha Sasikumar • Founder & Creative Visionary",
   },
+
   {
     id: 2,
-    image: "/images/drop_cut_blue_banner.jpg",
-    tagline: "The Sapphire Drop Edit",
-  },
-  {
-    id: 3,
     image: "/images/ZhaevaahHero.jpg",
     tagline: "Certified Diamond Elegance",
   },
   {
-    id: 4,
+    id: 3,
     image: "/images/collection.webp",
     tagline: "Royal Heritage Masterpieces",
   },
@@ -152,10 +149,7 @@ export default function AuthPage() {
       const res = await apiLogin(email, password);
       if (res.success && res.requiresOtp) {
         // Requires OTP verification to complete sign-in
-        setSuccessMsg(
-          res.message ||
-            `A 6-digit verification code has been sent to ${email}.`
-        );
+        clearMessages();
         setAuthMode("verify-login-otp");
         setResendCooldown(60);
       } else if (res.success && res.token) {
@@ -240,7 +234,7 @@ export default function AuthPage() {
       if (u.name) setName(u.name);
       if (u.phone) setPhone(u.phone);
       if (u.gender) setGender(u.gender);
-      if (u.dateOfBirth) setDateOfBirth(u.dateOfBirth);
+      if (u.dateOfBirth) setDateOfBirth(formatAutoDate(u.dateOfBirth));
       setAuthMode("complete-profile");
       setSuccessMsg("Please provide your phone number, gender, and date of birth to complete your atelier profile.");
     } else {
@@ -301,10 +295,7 @@ export default function AuthPage() {
         dateOfBirth,
       });
       if (res.success && res.requiresVerification) {
-        setSuccessMsg(
-          res.message ||
-            `A 6-digit verification code has been sent to ${email}. Please enter it below.`
-        );
+        clearMessages();
         setAuthMode("verify-registration");
         setResendCooldown(60);
       } else if (res.success) {
@@ -496,13 +487,16 @@ export default function AuthPage() {
           </div>
 
           <div className="my-auto py-2">
-            {/* Success Feedback Alert */}
-            {successMsg && (
-              <div className="mb-4 p-3 bg-[#FAF6EE] border border-[#B8933F]/40 text-[#B8933F] text-xs rounded-xs flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-[#B8933F] shrink-0 mt-0.5" />
-                <span className="leading-relaxed">{successMsg}</span>
-              </div>
-            )}
+            {/* Success Feedback Alert (Hidden on verification screens to avoid redundant banners) */}
+            {successMsg &&
+              authMode !== "verify-registration" &&
+              authMode !== "verify-login-otp" &&
+              authMode !== "reset-password" && (
+                <div className="mb-4 p-3 bg-[#FAF6EE] border border-[#B8933F]/40 text-[#B8933F] text-xs rounded-xs flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-[#B8933F] shrink-0 mt-0.5" />
+                  <span className="leading-relaxed">{successMsg}</span>
+                </div>
+              )}
 
             {/* Error Feedback Alert */}
             {errorMsg && (
@@ -670,12 +664,14 @@ export default function AuthPage() {
                     </div>
                     <div>
                       <input
-                        type="date"
+                        type="text"
+                        inputMode="numeric"
                         value={dateOfBirth}
-                        onChange={(e) => setDateOfBirth(e.target.value)}
+                        onChange={(e) => setDateOfBirth(formatAutoDate(e.target.value, dateOfBirth))}
+                        placeholder="DOB (DD / MM / YYYY)"
+                        maxLength={14}
                         required
-                        title="Date of Birth"
-                        className="w-full px-3 py-2 bg-[#F6F6F6] border border-transparent focus:border-[#B8933F] rounded-xs text-xs text-[#1C1208] focus:outline-none transition-colors"
+                        className="w-full px-3 py-2 bg-[#F6F6F6] border border-transparent focus:border-[#B8933F] rounded-xs text-xs text-[#1C1208] placeholder:text-[#999] focus:outline-none transition-colors"
                       />
                     </div>
                   </div>
@@ -770,20 +766,27 @@ export default function AuthPage() {
                     <span>{isLoading ? "Verifying..." : "Verify & Complete Registration"}</span>
                   </button>
 
-                  <div className="flex items-center justify-between text-xs pt-1">
-                    <button
-                      type="button"
-                      onClick={handleResendRegistrationOtp}
-                      disabled={resendCooldown > 0 || isLoading}
-                      className="text-[#B8933F] hover:underline disabled:text-[#999] disabled:no-underline font-medium text-[11px] flex items-center gap-1 cursor-pointer"
-                    >
-                      <RefreshCw className={`w-3 h-3 ${isLoading ? "animate-spin" : ""}`} />
-                      <span>
-                        {resendCooldown > 0
-                          ? `Resend code in ${resendCooldown}s`
-                          : "Resend Verification Code"}
-                      </span>
-                    </button>
+                  <div className="flex items-center justify-between text-xs pt-1 flex-wrap gap-2">
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={handleResendRegistrationOtp}
+                        disabled={resendCooldown > 0 || isLoading}
+                        className="text-[#B8933F] hover:underline disabled:text-[#999] disabled:no-underline font-medium text-[11px] flex items-center gap-1 cursor-pointer"
+                      >
+                        <RefreshCw className={`w-3 h-3 ${isLoading ? "animate-spin" : ""}`} />
+                        <span>
+                          {resendCooldown > 0
+                            ? `Resend code in ${resendCooldown}s`
+                            : "Resend Verification Code"}
+                        </span>
+                      </button>
+                      {resendCooldown >= 56 && (
+                        <span className="text-[10px] text-[#2E7D32] font-medium flex items-center gap-0.5">
+                          <Check className="w-2.5 h-2.5" /> Sent
+                        </span>
+                      )}
+                    </div>
 
                     <button
                       type="button"
@@ -843,20 +846,27 @@ export default function AuthPage() {
                     <span>{isLoading ? "Verifying..." : "Verify & Sign In"}</span>
                   </button>
 
-                  <div className="flex items-center justify-between text-xs pt-1">
-                    <button
-                      type="button"
-                      onClick={handleResendLoginOtp}
-                      disabled={resendCooldown > 0 || isLoading}
-                      className="text-[#B8933F] hover:underline disabled:text-[#999] disabled:no-underline font-medium text-[11px] flex items-center gap-1 cursor-pointer"
-                    >
-                      <RefreshCw className={`w-3 h-3 ${isLoading ? "animate-spin" : ""}`} />
-                      <span>
-                        {resendCooldown > 0
-                          ? `Resend code in ${resendCooldown}s`
-                          : "Resend Login Code"}
-                      </span>
-                    </button>
+                  <div className="flex items-center justify-between text-xs pt-1 flex-wrap gap-2">
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={handleResendLoginOtp}
+                        disabled={resendCooldown > 0 || isLoading}
+                        className="text-[#B8933F] hover:underline disabled:text-[#999] disabled:no-underline font-medium text-[11px] flex items-center gap-1 cursor-pointer"
+                      >
+                        <RefreshCw className={`w-3 h-3 ${isLoading ? "animate-spin" : ""}`} />
+                        <span>
+                          {resendCooldown > 0
+                            ? `Resend code in ${resendCooldown}s`
+                            : "Resend Login Code"}
+                        </span>
+                      </button>
+                      {resendCooldown >= 56 && (
+                        <span className="text-[10px] text-[#2E7D32] font-medium flex items-center gap-0.5">
+                          <Check className="w-2.5 h-2.5" /> Sent
+                        </span>
+                      )}
+                    </div>
 
                     <button
                       type="button"
@@ -919,14 +929,17 @@ export default function AuthPage() {
 
                   <div>
                     <label className="block text-[11px] uppercase tracking-wider text-[#767069] font-medium mb-1">
-                      Date of Birth
+                      Date of Birth (DOB)
                     </label>
                     <input
-                      type="date"
+                      type="text"
+                      inputMode="numeric"
                       value={dateOfBirth}
-                      onChange={(e) => setDateOfBirth(e.target.value)}
+                      onChange={(e) => setDateOfBirth(formatAutoDate(e.target.value, dateOfBirth))}
+                      placeholder="DOB (DD / MM / YYYY)"
+                      maxLength={14}
                       required
-                      className="w-full px-3.5 py-2.5 bg-[#F6F6F6] border border-transparent focus:border-[#B8933F] rounded-xs text-xs text-[#1C1208] focus:outline-none transition-colors"
+                      className="w-full px-3.5 py-2.5 bg-[#F6F6F6] border border-transparent focus:border-[#B8933F] rounded-xs text-xs text-[#1C1208] placeholder:text-[#999] focus:outline-none transition-colors"
                     />
                   </div>
 
@@ -1145,7 +1158,7 @@ export default function AuthPage() {
                 priority={index === 0}
               />
               {/* Luxury dark bottom gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
             </div>
           ))}
 

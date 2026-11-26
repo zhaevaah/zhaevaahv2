@@ -17,14 +17,14 @@ export default function LatestProducts() {
     }
   }, [dispatch, products.length]);
 
-  const latestProducts = products.slice(0, 4);
+  const latestProducts = products.slice(0, 5);
 
   return (
-    <section id="latest-products" className="w-full py-8 sm:py-12 lg:py-20 bg-white">
+    <section id="latest-products" className="w-full pt-6 sm:pt-8 md:pt-10 pb-12 sm:pb-16 md:pb-20 bg-white">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading & Subtitle */}
-        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-10 lg:mb-14">
+        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10">
           <h2 className="font-serif-luxury text-2xl sm:text-3xl lg:text-[40px] font-bold text-[#1C1208] tracking-tight mb-1.5 sm:mb-2.5">
             Latest Products
           </h2>
@@ -33,13 +33,13 @@ export default function LatestProducts() {
           </p>
         </div>
 
-        {/* 2-Column on Mobile, 4-Column on Desktop Grid */}
+        {/* 2-Column Mobile, 3-Col Tablet, 5-Column Desktop Grid */}
         {status === "loading" && latestProducts.length === 0 ? (
-          <ProductGridSkeleton count={4} cols={4} />
+          <ProductGridSkeleton count={5} cols={5} />
         ) : latestProducts.length === 0 ? (
-          <ProductGridSkeleton count={4} cols={4} />
+          <ProductGridSkeleton count={5} cols={5} />
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
             {latestProducts.map((product) => (
               <ProductCard key={product.id || (product as any).slug} product={product} />
             ))}

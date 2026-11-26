@@ -24,8 +24,8 @@ export default function GenderCollectionSection() {
     }
   }, [dispatch, womensList.length, mensList.length]);
 
-  const womenTrending = womensList.slice(0, 4);
-  const menTrending = mensList.slice(0, 4);
+  const womenTrending = womensList.slice(0, 5);
+  const menTrending = mensList.slice(0, 5);
 
   return (
     <section className="w-full py-10 sm:py-16 lg:py-20 bg-[#FAF9F7] border-y border-[#EAE3D5]/70">
@@ -59,11 +59,11 @@ export default function GenderCollectionSection() {
           </div>
 
           {status === "loading" && womenTrending.length === 0 ? (
-            <ProductGridSkeleton count={4} cols={4} />
+            <ProductGridSkeleton count={5} cols={5} />
           ) : womenTrending.length === 0 ? (
-            <ProductGridSkeleton count={4} cols={4} />
+            <ProductGridSkeleton count={5} cols={5} />
           ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
               {womenTrending.map((product) => (
                 <ProductCard key={product.id || (product as any).slug} product={product} />
               ))}
@@ -99,11 +99,11 @@ export default function GenderCollectionSection() {
           </div>
 
           {status === "loading" && menTrending.length === 0 ? (
-            <ProductGridSkeleton count={4} cols={4} />
+            <ProductGridSkeleton count={5} cols={5} />
           ) : menTrending.length === 0 ? (
-            <ProductGridSkeleton count={4} cols={4} />
+            <ProductGridSkeleton count={5} cols={5} />
           ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
               {menTrending.map((product) => (
                 <ProductCard key={product.id || (product as any).slug} product={product} />
               ))}

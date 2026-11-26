@@ -108,6 +108,7 @@ export default function SearchModal() {
                           src={item.primaryImage}
                           alt={item.title}
                           fill
+                          sizes="48px"
                           className="object-contain p-1 group-hover:scale-105 transition-transform"
                         />
                       </div>

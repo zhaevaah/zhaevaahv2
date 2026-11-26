@@ -33,6 +33,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { useStore } from "../context/StoreContext";
+import OrderInvoiceModal from "./OrderInvoiceModal";
 import {
   apiGetProfile,
   apiUpdateProfile,
@@ -43,6 +44,7 @@ import {
   apiGetMyOrders,
   apiChangePassword,
 } from "../lib/api";
+import { formatAutoDate } from "../lib/formatters";
 
 type ProfileTab =
   | "overview"
@@ -245,6 +247,7 @@ function ProfileContentInner() {
   const [activeTab, setActiveTab] = useState<ProfileTab>("overview");
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [selectedInvoiceOrder, setSelectedInvoiceOrder] = useState<any>(null);
 
   // Route Protection: If not logged in, redirect to home (/)
   useEffect(() => {
@@ -328,8 +331,8 @@ function ProfileContentInner() {
           lastName: lName,
           email: u.email || "",
           phone: u.phone || "",
-          dob: u.dateOfBirth || "",
-          anniversary: u.anniversary || "",
+          dob: formatAutoDate(u.dateOfBirth || ""),
+          anniversary: formatAutoDate(u.anniversary || ""),
           gender: u.gender || "Female",
           whatsappUpdates: u.whatsappUpdates ?? true,
           smsAlerts: u.smsAlerts ?? true,
@@ -629,6 +632,7 @@ function ProfileContentInner() {
                   src={profile.avatar}
                   alt={fullName}
                   fill
+                  sizes="(max-width: 640px) 64px, 80px"
                   className="object-cover rounded-full"
                 />
               ) : (
@@ -713,10 +717,115 @@ function ProfileContentInner() {
           </div>
         </div>
 
+        {/* ── Sticky Horizontal Navigation Bar for Small Screens ── */}
+        <div className="lg:hidden sticky top-16 z-30 -mx-4 sm:-mx-6 px-4 sm:px-6 py-2.5 bg-[#FAF9F7]/95 backdrop-blur-md border-y border-[#EAE3D5] shadow-xs mb-6">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth">
+            {/* Overview */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("overview")}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-full text-xs uppercase tracking-wider font-medium whitespace-nowrap shrink-0 transition-all cursor-pointer ${
+                activeTab === "overview"
+                  ? "bg-[#1C1208] text-white shadow-xs font-semibold"
+                  : "bg-white text-[#524B43] hover:text-[#1C1208] border border-[#DDD5C7]"
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5 text-[#B8933F]" />
+              <span>Overview</span>
+            </button>
+
+            {/* Orders */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("orders")}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-full text-xs uppercase tracking-wider font-medium whitespace-nowrap shrink-0 transition-all cursor-pointer ${
+                activeTab === "orders"
+                  ? "bg-[#1C1208] text-white shadow-xs font-semibold"
+                  : "bg-white text-[#524B43] hover:text-[#1C1208] border border-[#DDD5C7]"
+              }`}
+            >
+              <Package className="w-3.5 h-3.5 text-[#B8933F]" />
+              <span>Orders</span>
+              <span className="bg-[#B8933F] text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full">
+                {orders.length}
+              </span>
+            </button>
+
+            {/* Personal Info */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("edit-profile")}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-full text-xs uppercase tracking-wider font-medium whitespace-nowrap shrink-0 transition-all cursor-pointer ${
+                activeTab === "edit-profile"
+                  ? "bg-[#1C1208] text-white shadow-xs font-semibold"
+                  : "bg-white text-[#524B43] hover:text-[#1C1208] border border-[#DDD5C7]"
+              }`}
+            >
+              <User className="w-3.5 h-3.5 text-[#B8933F]" />
+              <span>Personal Info</span>
+            </button>
+
+            {/* Saved Addresses */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("addresses")}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-full text-xs uppercase tracking-wider font-medium whitespace-nowrap shrink-0 transition-all cursor-pointer ${
+                activeTab === "addresses"
+                  ? "bg-[#1C1208] text-white shadow-xs font-semibold"
+                  : "bg-white text-[#524B43] hover:text-[#1C1208] border border-[#DDD5C7]"
+              }`}
+            >
+              <MapPin className="w-3.5 h-3.5 text-[#B8933F]" />
+              <span>Addresses ({addresses.length})</span>
+            </button>
+
+            {/* Privilege Club */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("privilege")}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-full text-xs uppercase tracking-wider font-medium whitespace-nowrap shrink-0 transition-all cursor-pointer ${
+                activeTab === "privilege"
+                  ? "bg-[#1C1208] text-white shadow-xs font-semibold"
+                  : "bg-white text-[#524B43] hover:text-[#1C1208] border border-[#DDD5C7]"
+              }`}
+            >
+              <Crown className="w-3.5 h-3.5 text-[#B8933F]" />
+              <span>Privilege Club</span>
+            </button>
+
+            {/* Security */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("security")}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-full text-xs uppercase tracking-wider font-medium whitespace-nowrap shrink-0 transition-all cursor-pointer ${
+                activeTab === "security"
+                  ? "bg-[#1C1208] text-white shadow-xs font-semibold"
+                  : "bg-white text-[#524B43] hover:text-[#1C1208] border border-[#DDD5C7]"
+              }`}
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-[#B8933F]" />
+              <span>Security</span>
+            </button>
+
+            {/* Sign Out */}
+            <button
+              type="button"
+              onClick={() => {
+                logout();
+                router.replace("/");
+              }}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs uppercase tracking-wider font-medium whitespace-nowrap shrink-0 text-[#C38B75] bg-[#FFF5F2] hover:bg-[#FFEAE3] border border-[#F5D5CB] transition-all cursor-pointer"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+
         {/* ── Main Two-Column Layout ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* ── Left Sidebar Navigation ── */}
-          <aside className="lg:col-span-3 bg-white border border-[#EAE3D5] rounded-xs p-4 shadow-xs space-y-1">
+          {/* ── Left Sidebar Navigation (Desktop) ── */}
+          <aside className="hidden lg:block lg:col-span-3 bg-white border border-[#EAE3D5] rounded-xs p-4 shadow-xs space-y-1 sticky top-28">
             <button
               type="button"
               onClick={() => setActiveTab("overview")}
@@ -908,6 +1017,7 @@ function ProfileContentInner() {
                                   src={item.image}
                                   alt={item.name}
                                   fill
+                                  sizes="56px"
                                   className="object-contain"
                                 />
                               </div>
@@ -1103,6 +1213,7 @@ function ProfileContentInner() {
                                       src={item.image}
                                       alt={item.name}
                                       fill
+                                      sizes="64px"
                                       className="object-contain"
                                     />
                                   </div>
@@ -1190,14 +1301,10 @@ function ProfileContentInner() {
                               <div className="flex items-center gap-2">
                                 <button
                                   type="button"
-                                  onClick={() =>
-                                    showToast(
-                                      `Tax invoice for Order #${order.id} downloaded successfully.`
-                                    )
-                                  }
-                                  className="inline-flex items-center gap-1.5 px-4 py-2 border border-[#DDD5C7] rounded-xs text-xs font-medium text-[#1C1208] hover:border-[#B8933F] hover:text-[#B8933F] transition-colors"
+                                  onClick={() => setSelectedInvoiceOrder(order)}
+                                  className="inline-flex items-center gap-1.5 px-4 py-2 border border-[#DDD5C7] hover:border-[#B8933F] rounded-full text-xs font-semibold text-[#1C1208] hover:text-[#B8933F] transition-colors cursor-pointer shadow-none active:scale-95"
                                 >
-                                  <Download className="w-3.5 h-3.5" />
+                                  <Download className="w-3.5 h-3.5 text-[#B8933F]" />
                                   <span>Download Tax Invoice (PDF)</span>
                                 </button>
 
@@ -1335,12 +1442,15 @@ function ProfileContentInner() {
                             Date of Birth
                           </label>
                           <input
-                            type="date"
+                            type="text"
+                            inputMode="numeric"
                             value={profile.dob}
                             onChange={(e) =>
-                              setProfile({ ...profile, dob: e.target.value })
+                              setProfile({ ...profile, dob: formatAutoDate(e.target.value, profile.dob) })
                             }
-                            className="w-full px-3.5 py-2.5 bg-[#FAF9F7] border border-[#DDD5C7] rounded-xs text-xs text-[#1C1208] focus:outline-none focus:border-[#B8933F]"
+                            placeholder="DOB (DD / MM / YYYY)"
+                            maxLength={14}
+                            className="w-full px-3.5 py-2.5 bg-[#FAF9F7] border border-[#DDD5C7] rounded-xs text-xs text-[#1C1208] placeholder:text-[#A89F95] focus:outline-none focus:border-[#B8933F]"
                           />
                           <span className="text-[10px] text-[#A89F95] mt-1 block">
                             Receive exclusive 15% birthday anniversary perks
@@ -1353,12 +1463,15 @@ function ProfileContentInner() {
                             Wedding / Milestone Anniversary
                           </label>
                           <input
-                            type="date"
+                            type="text"
+                            inputMode="numeric"
                             value={profile.anniversary}
                             onChange={(e) =>
-                              setProfile({ ...profile, anniversary: e.target.value })
+                              setProfile({ ...profile, anniversary: formatAutoDate(e.target.value, profile.anniversary) })
                             }
-                            className="w-full px-3.5 py-2.5 bg-[#FAF9F7] border border-[#DDD5C7] rounded-xs text-xs text-[#1C1208] focus:outline-none focus:border-[#B8933F]"
+                            placeholder="Anniversary (DD / MM / YYYY)"
+                            maxLength={14}
+                            className="w-full px-3.5 py-2.5 bg-[#FAF9F7] border border-[#DDD5C7] rounded-xs text-xs text-[#1C1208] placeholder:text-[#A89F95] focus:outline-none focus:border-[#B8933F]"
                           />
                           <span className="text-[10px] text-[#A89F95] mt-1 block">
                             Complimentary gift upgrade on your special date
@@ -2030,6 +2143,14 @@ function ProfileContentInner() {
           </main>
         </div>
       </div>
+
+      {/* Official Tax Invoice & Certification Modal */}
+      <OrderInvoiceModal
+        order={selectedInvoiceOrder}
+        user={storeUser || profile}
+        isOpen={Boolean(selectedInvoiceOrder)}
+        onClose={() => setSelectedInvoiceOrder(null)}
+      />
     </div>
   );
 }

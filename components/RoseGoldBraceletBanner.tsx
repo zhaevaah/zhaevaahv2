@@ -65,6 +65,7 @@ export default function RoseGoldBraceletBanner() {
                 src={banner.image}
                 alt={banner.title}
                 fill
+                sizes="(max-width: 640px) 40vw, (max-width: 1024px) 40vw, 350px"
                 className="object-contain object-right transition-transform duration-700 ease-out group-hover:scale-105"
               />
             </div>

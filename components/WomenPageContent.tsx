@@ -13,11 +13,13 @@ import {
   LayoutGrid,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   RotateCcw,
   Sparkles,
   Check,
   Copy,
 } from "lucide-react";
+import CollectionBannerCarousel from "./CollectionBannerCarousel";
 import ProductCard from "./ProductCard";
 import ProductGridSkeleton from "./skeletons/ProductGridSkeleton";
 import { WOMENS_CATEGORIES, CatalogProduct } from "../data/products";
@@ -343,85 +345,88 @@ function WomenContentInner() {
           </nav>
         </div>
 
-        {/* Top Exclusive Privilege Banner (Matching Atelier Standard) */}
-        <section className="mb-8 relative rounded-xs overflow-hidden shadow-sm">
-          <div className="relative p-6 sm:p-8 lg:p-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 bg-gradient-to-r from-[#111111] via-[#1a1a1a] to-[#242424] text-white border border-[#2c2c2c]">
-            {/* Left Content */}
-            <div className="max-w-2xl space-y-2">
-              <div className="flex items-center gap-3">
-                <span className="border border-[#B8933F] text-[#B8933F] text-[10px] sm:text-[11px] font-bold tracking-[0.16em] px-2.5 py-1 uppercase rounded-xs">
-                  {collectionConfig.promoBanner?.badge || "FESTIVE ATELIER PRIVILEGE"}
-                </span>
-                <span className="text-[#B8933F] text-xs sm:text-[13px] font-bold tracking-wide">
-                  {collectionConfig.promoBanner?.discountText || "15% OFF"}
-                </span>
-              </div>
-
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight pt-1">
-                {collectionConfig.promoBanner?.title || "The Solitaire Symphony Celebration"}
-              </h2>
-
-              <p className="text-xs sm:text-[13px] text-neutral-300 font-light leading-relaxed max-w-xl">
-                {collectionConfig.promoBanner?.subtitle ||
-                  "Complimentary BIS hallmarking certification, insured pan-India white-glove courier & special diamond rates."}
-              </p>
-            </div>
-
-            {/* Right Action Controls */}
-            <div className="flex flex-wrap items-center gap-3 shrink-0">
-              <button
-                type="button"
-                onClick={() => {
-                  const code = collectionConfig.promoBanner?.discountCode || "SOLITAIRE15";
-                  navigator.clipboard.writeText(code);
-                  setCouponCopied(true);
-                  setTimeout(() => setCouponCopied(false), 2500);
-                }}
-                className="flex items-center gap-2 px-4 py-2.5 bg-black/60 hover:bg-black/80 border border-[#B8933F]/70 text-[#E5C278] font-mono text-xs rounded-xs transition-colors cursor-pointer"
-                title="Click to copy coupon code"
-              >
-                <span>CODE: {collectionConfig.promoBanner?.discountCode || "SOLITAIRE15"}</span>
-                {couponCopied ? (
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
-                ) : (
-                  <Copy className="w-3.5 h-3.5 text-[#B8933F]" />
-                )}
-              </button>
-
-              <a
-                href={collectionConfig.promoBanner?.buttonLink || "#catalog-section"}
-                className="px-6 py-2.5 bg-[#B8933F] hover:bg-[#9E792B] text-white text-xs uppercase font-bold tracking-wider rounded-xs transition-colors cursor-pointer shadow-sm flex items-center gap-1.5"
-              >
-                <span>{collectionConfig.promoBanner?.buttonText || "CLAIM FESTIVE PRIVILEGE"}</span>
-                <span>→</span>
-              </a>
-            </div>
-          </div>
-        </section>
-
-      
+        {/* 16:9 Image-Only Promotional Carousel */}
+        {collectionConfig.promoBanner?.enabled !== false && (
+          <CollectionBannerCarousel
+            slides={
+              collectionConfig.promoBanner?.slides && collectionConfig.promoBanner.slides.length > 0
+                ? collectionConfig.promoBanner.slides
+                : [
+                    {
+                      id: "w-slide-1",
+                      image: collectionConfig.promoBanner?.bgImage || "/images/drop_cut_blue_banner.jpg",
+                      link: "/women?category=diamond-rings",
+                      alt: "Fine Blue Gemstone Collection",
+                    },
+                    {
+                      id: "w-slide-2",
+                      image: "/images/ring_beckons_banner.jpg",
+                      link: "/women?category=solitaire-rings",
+                      alt: "Solitaire Symphony Rings",
+                    },
+                    {
+                      id: "w-slide-3",
+                      image: "/images/ad_banner_necklace_full.jpg",
+                      link: "/women?category=diamond-pendant",
+                      alt: "Couture Necklaces Atelier",
+                    },
+                  ]
+            }
+            fallbackImage="/images/drop_cut_blue_banner.jpg"
+          />
+        )}
 
         {/* Header Title & Section Marker */}
-        <div id="catalog-section" className="mb-8 pt-4">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-[#EAE3D5] pb-5">
+        <div id="catalog-section" className="mb-4 sm:mb-6 pt-1 sm:pt-4">
+          <div className="flex items-baseline justify-between border-b border-[#EAE3D5] pb-2 sm:pb-4">
             <div>
-              <h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#1C1208] tracking-tight">
+              <h2 className="font-serif-luxury text-xl sm:text-3xl font-bold text-[#1C1208] tracking-tight">
                 {collectionConfig.pageTitle || "Women's Fine Jewellery Collection"}
               </h2>
-              <p className="text-xs sm:text-sm text-[#767069] font-light mt-1">
+              <p className="hidden sm:block text-xs sm:text-sm text-[#767069] font-light mt-1">
                 Filter and explore our complete certified hallmarked creations.
               </p>
             </div>
             
-            {/* Mobile Filter Button */}
+            <span className="hidden sm:inline-block text-xs text-[#767069]">
+              {totalProducts} Total Items
+            </span>
+          </div>
+
+          {/* Compact Mobile Filter & Sort Toolbar (Single Row, ultra space-saving) */}
+          <div className="lg:hidden flex items-center justify-between gap-2 pt-2.5">
+            {/* Compact Filter Pill Button */}
             <button
               type="button"
               onClick={() => setMobileFilterOpen(true)}
-              className="lg:hidden mt-4 sm:mt-0 inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#DDD5C7] rounded-xs text-xs uppercase font-medium tracking-wider text-[#1C1208]"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FAF9F7] hover:bg-[#F2ECE2] active:scale-95 border border-[#DDD5C7] rounded-full text-xs font-medium text-[#1C1208] shadow-2xs transition-all"
             >
-              <Filter className="w-4 h-4 text-[#B8933F]" />
-              <span>Filters ({hasActiveFilters ? "Active" : "All"})</span>
+              <SlidersHorizontal className="w-3.5 h-3.5 text-[#B8933F]" />
+              <span>Filters</span>
+              {hasActiveFilters && (
+                <span className="w-1.5 h-1.5 rounded-full bg-[#B8933F]" />
+              )}
             </button>
+
+            {/* Product Counter */}
+            <span className="text-[11px] text-[#767069] font-medium truncate">
+              {totalProducts} products
+            </span>
+
+            {/* Compact Sort Select */}
+            <div className="relative flex items-center">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="text-xs bg-white border border-[#DDD5C7] rounded-full pl-2.5 pr-6 py-1.5 text-[#1C1208] focus:outline-none focus:border-[#B8933F] cursor-pointer appearance-none shadow-2xs"
+              >
+                <option value="featured">Featured</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Top Rated</option>
+              </select>
+              <ChevronDown className="w-3 h-3 text-[#767069] absolute right-2 pointer-events-none" />
+            </div>
           </div>
         </div>
 
@@ -615,8 +620,8 @@ function WomenContentInner() {
           {/* ── Right Content: Product Grid & Pagination ── */}
           <main className="lg:col-span-9 flex flex-col">
             
-            {/* Top Controls Bar */}
-            <div className="bg-white p-4 rounded-xs border border-[#EAE3D5] flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 shadow-xs">
+            {/* Top Controls Bar (Desktop) */}
+            <div className="hidden lg:flex bg-white p-4 rounded-xs border border-[#EAE3D5] items-center justify-between gap-4 mb-6 shadow-xs">
               
               {/* Product counter */}
               <div className="text-xs text-[#767069]">

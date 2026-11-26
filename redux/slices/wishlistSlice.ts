@@ -13,7 +13,7 @@ const getInitialWishlist = (): string[] => {
       // ignore
     }
   }
-  return ["prod-1", "prod-2", "prod-4"];
+  return [];
 };
 
 const initialState: WishlistState = {

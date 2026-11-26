@@ -13,9 +13,11 @@ export default function MobileBottomNav() {
   const { user, isLoggedIn } = useStore();
 
   const [isVisible, setIsVisible] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
@@ -127,7 +129,7 @@ export default function MobileBottomNav() {
       </Link>
 
       {/* 5. USER PROFILE (if logged in) else LOGIN */}
-      {isLoggedIn && user ? (
+      {mounted && isLoggedIn && user ? (
         <Link
           href="/profile"
           className={`flex flex-col items-center justify-center py-1 px-3 rounded-full transition-colors ${
@@ -142,6 +144,7 @@ export default function MobileBottomNav() {
                 src={user.avatar || user.picture || user.image!}
                 alt={user.name || "User"}
                 fill
+                sizes="20px"
                 unoptimized
                 className="object-cover"
               />

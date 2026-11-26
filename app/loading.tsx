@@ -30,13 +30,13 @@ export default function HomeLoading() {
       <CategoryGridSkeleton />
 
       {/* Latest Products Skeleton */}
-      <section className="w-full py-10 sm:py-16 bg-white">
+      <section className="w-full pt-6 sm:pt-8 md:pt-10 pb-12 sm:pb-16 md:pb-20 bg-white">
         <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-xl mx-auto mb-8 sm:mb-12">
+          <div className="text-center max-w-xl mx-auto mb-6 sm:mb-8 md:mb-10">
             <div className="h-7 sm:h-9 w-48 bg-[#DFD8CB] rounded-xs mx-auto mb-2 skeleton-shimmer" />
             <div className="h-3.5 w-64 bg-[#EAE4D6] rounded-xs mx-auto skeleton-shimmer" />
           </div>
-          <ProductGridSkeleton count={4} cols={4} />
+          <ProductGridSkeleton count={5} cols={5} />
         </div>
       </section>
 
@@ -47,7 +47,7 @@ export default function HomeLoading() {
             <div className="h-7 sm:h-9 w-44 bg-[#DFD8CB] rounded-xs mx-auto mb-2 skeleton-shimmer" />
             <div className="h-3.5 w-56 bg-[#EAE4D6] rounded-xs mx-auto skeleton-shimmer" />
           </div>
-          <ProductGridSkeleton count={4} cols={4} />
+          <ProductGridSkeleton count={5} cols={5} />
         </div>
       </section>
     </div>

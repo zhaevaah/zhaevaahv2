@@ -159,6 +159,7 @@ export default function CartPageContent() {
                                 src={item.image}
                                 alt={item.title}
                                 fill
+                                sizes="(max-width: 640px) 64px, 80px"
                                 className="object-contain"
                               />
                             </div>

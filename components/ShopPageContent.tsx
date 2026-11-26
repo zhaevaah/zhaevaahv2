@@ -29,9 +29,12 @@ const CATEGORIES = [
   "Solitaire Rings",
   "Necklaces & Pendants",
   "Diamond Bracelets",
+  "Bangles",
   "Earrings",
   "Wedding & Bridal Sets",
   "Men's Rings",
+  "Men's Bracelets & Kadas",
+  "Chains & Pendants",
 ];
 
 const METALS = [
@@ -123,11 +126,15 @@ function ShopContentInner() {
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
       // Category filter
-      if (
-        selectedCategory !== "All Categories" &&
-        product.category !== selectedCategory
-      ) {
-        return false;
+      if (selectedCategory !== "All Categories") {
+        if (selectedCategory === "Bangles") {
+          const isBangle =
+            product.category === "Diamond Bracelets" ||
+            product.title.toLowerCase().includes("bangle");
+          if (!isBangle) return false;
+        } else if (product.category !== selectedCategory) {
+          return false;
+        }
       }
 
       // Metal filter

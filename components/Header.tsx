@@ -48,11 +48,14 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -62,10 +65,10 @@ export default function Header() {
       <header
         className={`w-full z-40 transition-all duration-300 ${
           isScrolled
-            ? "sticky top-0 bg-white/80 backdrop-blur-md shadow-sm border-b border-[#eae6de]/60"
+            ? "sticky top-0 bg-white shadow-xs border-b border-[#eae6de]/80"
             : isHomePage
             ? "sticky top-0 bg-transparent border-transparent"
-            : "sticky top-0 bg-white/90 backdrop-blur-sm border-b border-[#f0ece5]"
+            : "sticky top-0 bg-white/95 backdrop-blur-sm border-b border-[#f0ece5]"
         }`}
       >
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -196,7 +199,7 @@ export default function Header() {
 
               {/* User Account / Profile Image (Desktop Only - Mobile uses Bottom Nav) */}
               <div className="relative group hidden lg:block">
-                {isLoggedIn && user ? (
+                {mounted && isLoggedIn && user ? (
                   /* Logged-In User Profile Avatar */
                   <Link
                     href="/profile"
@@ -209,6 +212,7 @@ export default function Header() {
                           src={user.avatar || user.picture || user.image!}
                           alt={user.name}
                           fill
+                          sizes="36px"
                           unoptimized
                           className="object-cover"
                         />
@@ -239,7 +243,7 @@ export default function Header() {
 
                 {/* Dropdown Menu */}
                 <div className="absolute right-0 top-full mt-2 w-64 bg-white/95 backdrop-blur-md border border-[#eae6de] shadow-xl py-3 rounded-xs opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                  {isLoggedIn && user ? (
+                  {mounted && isLoggedIn && user ? (
                     <>
                       <div className="px-4 py-2.5 border-b border-[#eae6de] mb-1">
                         <div className="flex items-center gap-2.5">
@@ -249,6 +253,7 @@ export default function Header() {
                                 src={user.avatar || user.picture || user.image!}
                                 alt={user.name}
                                 fill
+                                sizes="36px"
                                 unoptimized
                                 className="object-cover"
                               />
@@ -333,8 +338,11 @@ export default function Header() {
                 aria-label="Shopping Cart"
               >
                 <ShoppingBag className="w-5 h-5 stroke-[1.7]" />
-                <span className="absolute -top-1 -right-1 bg-[#B8933F] text-white text-[10px] font-semibold w-4.5 h-4.5 rounded-full flex items-center justify-center leading-none">
-                  {cartCount}
+                <span
+                  suppressHydrationWarning
+                  className="absolute -top-1 -right-1 bg-[#B8933F] text-white text-[10px] font-semibold w-4.5 h-4.5 rounded-full flex items-center justify-center leading-none"
+                >
+                  {mounted ? cartCount : 0}
                 </span>
               </button>
             </div>
@@ -389,6 +397,7 @@ export default function Header() {
                             src={user.avatar || user.picture || user.image!}
                             alt={user.name}
                             fill
+                            sizes="32px"
                             unoptimized
                             className="object-cover"
                           />
@@ -451,9 +460,7 @@ export default function Header() {
                     <FemaleSymbolIcon className="w-4 h-4 text-[#B8933F]" />
                     <span>WOMEN&apos;S COLLECTION</span>
                   </div>
-                  <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-pink-100 text-pink-700 font-bold border border-pink-200">
-                    ♀
-                  </span>
+                
                 </Link>
                 <Link
                   href="/men"
@@ -466,9 +473,7 @@ export default function Header() {
                     <MaleSymbolIcon className="w-4 h-4 text-[#B8933F]" />
                     <span>MEN&apos;S COLLECTION</span>
                   </div>
-                  <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-blue-100 text-blue-700 font-bold border border-blue-200">
-                    ♂
-                  </span>
+              
                 </Link>
                 <Link
                   href="/top-deals"

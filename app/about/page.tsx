@@ -43,6 +43,7 @@ function AboutPageContent() {
                 src="/images/collection.webp"
                 alt="ZHAEVAAH Handcrafted Jewellery Masterpiece"
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover object-center"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />

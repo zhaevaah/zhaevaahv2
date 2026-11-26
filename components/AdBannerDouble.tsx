@@ -37,6 +37,7 @@ export default function AdBannerDouble() {
                   src="/images/ad_necklace.png"
                   alt="Women's Rose Gold Necklace"
                   fill
+                  sizes="(max-width: 640px) 40vw, (max-width: 1024px) 25vw, 240px"
                   className="object-contain object-center transition-transform duration-700 ease-out group-hover:scale-108"
                 />
               </div>
@@ -70,6 +71,7 @@ export default function AdBannerDouble() {
                   src="/images/ad_ring.png"
                   alt="Rose Gold Ring For Women"
                   fill
+                  sizes="(max-width: 640px) 40vw, (max-width: 1024px) 25vw, 240px"
                   className="object-contain object-center transition-transform duration-700 ease-out group-hover:scale-108"
                 />
               </div>

@@ -4,60 +4,47 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Phone, Mail, ArrowRight } from "lucide-react";
+import PaymentMethodsStrip from "./PaymentMethodsStrip";
 
 export default function Footer() {
   return (
     <footer className="w-full bg-white text-[#1C1208]">
       
-      {/* ── 1. Pre-Footer Banner (Subscribe / Shop Now with Model) ── */}
-      <div className="w-full bg-[#F5EFE6] overflow-hidden border-t border-b border-[#EAE3D5]">
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-12 items-center min-h-[220px] sm:min-h-[250px] py-8 md:py-0">
-            
-            {/* Left Content */}
-            <div className="md:col-span-7 lg:col-span-6 py-6 md:py-10 z-10">
-              <h3 className="font-montserrat text-2xl sm:text-3xl lg:text-[34px] font-normal text-[#1C1208] mb-2 tracking-tight">
-                Subscribe To Our Newsletter
-              </h3>
-              <p className="font-poppins text-xs sm:text-sm text-[#6E675F] font-light mb-6">
-                Subscribe to our latest newsletter to get news about special discounts.
-              </p>
+      {/* ── 1. Pre-Footer Brand Story Banner ── */}
+      <div className="relative w-full overflow-hidden border-t border-b border-[#B8933F]/30 bg-[#C8A360]">
+        {/* Background Image: Model on the right, golden luxury warm tone across */}
+        <div className="absolute inset-0 pointer-events-none select-none">
+          <Image
+            src="/images/footer_banner.webp"
+            alt="ZHAEVAAH Artisanal Fine Jewellery"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-right"
+          />
+          {/* Subtle gradient overlay on the left for crisp typography while keeping the model 100% clear and vibrant */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#C8A360]/85 via-[#C8A360]/35 to-transparent md:from-[#C8A360]/65 md:via-[#C8A360]/15 md:to-transparent" />
+        </div>
 
-              {/* Form with SHOP NOW button */}
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  alert("Thank you! Exclusive previews will be delivered to your inbox.");
-                }}
-                className="flex flex-col sm:flex-row items-stretch gap-2 max-w-lg"
-              >
-                <input
-                  type="email"
-                  placeholder="Email"
-                  required
-                  className="flex-1 px-4 py-3 bg-white border border-[#DDD5C7] rounded-xs text-xs sm:text-sm text-[#1C1208] placeholder:text-[#999] focus:outline-none focus:border-[#B8933F]"
-                />
-                <button
-                  type="submit"
-                  className="px-8 py-3 bg-[#B8933F] hover:bg-[#9E792B] text-white text-xs uppercase font-medium tracking-[0.16em] rounded-xs shadow-xs transition-colors whitespace-nowrap active:scale-95"
-                >
-                  SHOP NOW
-                </button>
-              </form>
-            </div>
+        <div className="relative z-10 max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 md:py-14">
+          <div className="max-w-xl lg:max-w-2xl">
+            <span className="text-[11px] sm:text-xs tracking-[0.25em] uppercase text-[#54380B] font-semibold block mb-2 font-montserrat">
+              The Essence of Radiance
+            </span>
+            <h3 className="font-montserrat text-2xl sm:text-3xl lg:text-[34px] font-normal text-[#1C1208] mb-3 leading-tight tracking-tight">
+              Celebrating Every Woman’s Unique Beauty
+            </h3>
+            <p className="font-poppins text-xs sm:text-sm text-[#38260E] font-medium leading-relaxed mb-6 max-w-lg">
+              Every woman embodies a rare and distinctive grace. Our bespoke fine jewellery is sculpted not merely to adorn, but to celebrate your inner radiance and the timeless stories you hold dear.
+            </p>
 
-            {/* Right Model Image */}
-            <div className="md:col-span-5 lg:col-span-6 relative h-[200px] sm:h-[240px] md:h-[260px] hidden md:flex items-center justify-end">
-              <div className="relative w-full h-full max-w-[420px]">
-                <Image
-                  src="/images/footer_model.jpg"
-                  alt="Fine Gold Layered Necklace"
-                  fill
-                  className="object-cover object-center"
-                />
-              </div>
-            </div>
-
+            <Link
+              href="/women"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-[#1C1208] hover:bg-[#8C6D23] text-white text-xs uppercase tracking-[0.2em] font-medium transition-all duration-300 shadow-md hover:shadow-lg group active:scale-95"
+            >
+              <span>SHOP NOW</span>
+              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
           </div>
         </div>
       </div>
@@ -206,13 +193,11 @@ export default function Footer() {
           </p>
 
           {/* Payment Gateway Badges */}
-          <div className="flex items-center space-x-2">
-            <span className="px-2 py-0.5 bg-[#F6F5F3] border border-[#DDD] rounded text-[10px] font-bold text-[#1A1F71]">VISA</span>
-            <span className="px-2 py-0.5 bg-[#F6F5F3] border border-[#DDD] rounded text-[10px] font-bold text-[#006699]">CB</span>
-            <span className="px-2 py-0.5 bg-[#F6F5F3] border border-[#DDD] rounded text-[10px] font-bold text-[#007AC1]">AMEX</span>
-            <span className="px-2 py-0.5 bg-[#F6F5F3] border border-[#DDD] rounded text-[10px] font-bold text-[#00518A]">MAESTRO</span>
-            <span className="px-2 py-0.5 bg-[#F6F5F3] border border-[#DDD] rounded text-[10px] font-bold text-[#EB001B]">MASTERCARD</span>
-            <span className="px-2 py-0.5 bg-[#F6F5F3] border border-[#DDD] rounded text-[10px] font-bold text-[#003087]">PAYPAL</span>
+          <div className="w-full md:w-auto">
+            <PaymentMethodsStrip
+              compact
+              className="max-w-[360px] sm:max-w-[390px] mx-auto md:mx-0 border-[#EAE3D5] bg-[#FAF9F7]"
+            />
           </div>
 
         </div>

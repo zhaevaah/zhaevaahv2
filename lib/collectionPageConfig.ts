@@ -7,6 +7,13 @@ export interface CollectionCategoryItem {
   itemCount?: string | number;
 }
 
+export interface BannerSlide {
+  id: string;
+  image: string;
+  link?: string;
+  alt?: string;
+}
+
 export interface CollectionPageConfig {
   gender: "women" | "men";
   pageTitle: string;
@@ -23,14 +30,15 @@ export interface CollectionPageConfig {
   featuredProductIds: string[];
   promoBanner: {
     enabled: boolean;
-    badge: string;
-    title: string;
-    subtitle: string;
-    discountCode: string;
-    discountText: string;
-    bgImage: string;
-    buttonText: string;
-    buttonLink: string;
+    slides?: BannerSlide[];
+    badge?: string;
+    title?: string;
+    subtitle?: string;
+    discountCode?: string;
+    discountText?: string;
+    bgImage?: string;
+    buttonText?: string;
+    buttonLink?: string;
   };
 }
 
@@ -52,7 +60,7 @@ export const DEFAULT_WOMENS_PAGE_CONFIG: CollectionPageConfig = {
       id: "w-cat-1",
       name: "Diamond Rings",
       slug: "diamond-rings",
-      image: "/images/category_rings.jpg",
+      image: "/category/ring.webp",
       badge: "HOT",
       itemCount: "4 Designs",
     },
@@ -68,7 +76,7 @@ export const DEFAULT_WOMENS_PAGE_CONFIG: CollectionPageConfig = {
       id: "w-cat-3",
       name: "Diamond Bracelets",
       slug: "diamond-bracelets",
-      image: "/images/category_bracelet.jpg",
+      image: "/category/bracelet.webp",
       badge: "SALE",
       itemCount: "2 Designs",
     },
@@ -76,7 +84,7 @@ export const DEFAULT_WOMENS_PAGE_CONFIG: CollectionPageConfig = {
       id: "w-cat-4",
       name: "Necklaces & Pendants",
       slug: "diamond-pendant",
-      image: "/images/category_pendant.jpg",
+      image: "/category/necklace.webp",
       badge: "POPULAR",
       itemCount: "3 Designs",
     },
@@ -92,13 +100,33 @@ export const DEFAULT_WOMENS_PAGE_CONFIG: CollectionPageConfig = {
   featuredProductIds: ["prod-topaz", "prod-1", "prod-2", "prod-3"],
   promoBanner: {
     enabled: true,
+    slides: [
+      {
+        id: "w-slide-1",
+        image: "/images/drop_cut_blue_banner.jpg",
+        link: "/women?category=diamond-rings",
+        alt: "Fine Blue Gemstone Collection",
+      },
+      {
+        id: "w-slide-2",
+        image: "/images/ring_beckons_banner.jpg",
+        link: "/women?category=solitaire-rings",
+        alt: "Solitaire Symphony Rings",
+      },
+      {
+        id: "w-slide-3",
+        image: "/images/ad_banner_necklace_full.jpg",
+        link: "/women?category=diamond-pendant",
+        alt: "Couture Necklaces Atelier",
+      },
+    ],
     badge: "FESTIVE ATELIER PRIVILEGE",
     title: "The Solitaire Symphony Celebration",
     subtitle:
       "Complimentary BIS hallmarking certification, insured pan-India white-glove courier & special diamond rates.",
     discountCode: "SOLITAIRE15",
     discountText: "15% OFF",
-    bgImage: "/images/banner_weekly_special.jpg",
+    bgImage: "/images/drop_cut_blue_banner.jpg",
     buttonText: "CLAIM FESTIVE PRIVILEGE",
     buttonLink: "/women?sort=featured",
   },
@@ -122,7 +150,7 @@ export const DEFAULT_MENS_PAGE_CONFIG: CollectionPageConfig = {
       id: "m-cat-1",
       name: "Men's Rings",
       slug: "mens-rings",
-      image: "/images/product_4_main.png",
+      image: "/category/men_ring.webp",
       badge: "BESTSELLER",
       itemCount: "2 Designs",
     },
@@ -130,7 +158,7 @@ export const DEFAULT_MENS_PAGE_CONFIG: CollectionPageConfig = {
       id: "m-cat-2",
       name: "Bracelets & Kadas",
       slug: "mens-bracelets-kadas",
-      image: "/images/category_bracelet.jpg",
+      image: "/category/men_bracelet.webp",
       badge: "SOLID GOLD",
       itemCount: "2 Designs",
     },
@@ -138,7 +166,7 @@ export const DEFAULT_MENS_PAGE_CONFIG: CollectionPageConfig = {
       id: "m-cat-3",
       name: "Chains & Pendants",
       slug: "chains-pendants",
-      image: "/images/category_pendant.jpg",
+      image: "/category/men_chain.webp",
       badge: "HEAVY 18KT",
       itemCount: "2 Designs",
     },
@@ -154,13 +182,33 @@ export const DEFAULT_MENS_PAGE_CONFIG: CollectionPageConfig = {
   featuredProductIds: ["prod-4", "prod-2"],
   promoBanner: {
     enabled: true,
+    slides: [
+      {
+        id: "m-slide-1",
+        image: "/images/bracelet_hotsell_banner.jpg",
+        link: "/men?category=mens-bracelets-kadas",
+        alt: "Men's Luxury Bracelet & Kada",
+      },
+      {
+        id: "m-slide-2",
+        image: "/images/ring_beckons_banner.jpg",
+        link: "/men?category=mens-rings",
+        alt: "Imperial Vault Signet Rings",
+      },
+      {
+        id: "m-slide-3",
+        image: "/images/ad_banner_ring_full.jpg",
+        link: "/men?category=chains-pendants",
+        alt: "Handcrafted 18kt Vault Accents",
+      },
+    ],
     badge: "SOVEREIGN VAULT PASS",
     title: "Commanding Sovereign Signet & Kada Sets",
     subtitle:
       "Complimentary hand-engraved initials, bespoke sizing consultation, and priority safe delivery.",
     discountCode: "VAULT10",
     discountText: "10% OFF",
-    bgImage: "/images/banner_weekly_special.jpg",
+    bgImage: "/images/bracelet_hotsell_banner.jpg",
     buttonText: "ACCESS MEN'S VAULT",
     buttonLink: "/men?sort=featured",
   },

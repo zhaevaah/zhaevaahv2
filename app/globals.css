@@ -67,6 +67,19 @@
   background: #b8933f;
 }
 
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.no-scrollbar,
+.scrollbar-none {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
 /* Infinite Smooth Marquee Ticker */
 @keyframes marquee-scroll {
   0% {
@@ -86,6 +99,34 @@
 
 .animate-marquee-scroll:hover {
   animation-play-state: paused;
+}
+
+/* Continuous Smooth Reviews Horizontal Marquee */
+@keyframes marquee-reviews-scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-reviews {
+  display: flex;
+  width: max-content;
+  animation: marquee-reviews-scroll 45s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-reviews:hover,
+.animate-marquee-reviews:active {
+  animation-play-state: paused;
+}
+
+@media (max-width: 640px) {
+  .animate-marquee-reviews {
+    animation-duration: 32s;
+  }
 }
 
 /* Luxury Shimmer Loading Animation */
@@ -109,4 +150,32 @@
   );
   background-size: 200% 100%;
   animation: luxury-shimmer 1.8s ease-in-out infinite;
+}
+
+/* Printable Luxury Invoice Stylesheet */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #invoice-printable-area,
+  #invoice-printable-area * {
+    visibility: visible !important;
+  }
+  #invoice-printable-area {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100vw !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    padding: 24px !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: none !important;
+    box-shadow: none !important;
+    z-index: 999999 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
 }

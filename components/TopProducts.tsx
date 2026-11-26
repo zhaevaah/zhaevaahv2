@@ -39,10 +39,10 @@ export default function TopProducts() {
 
   const filtered =
     activeTab === "all"
-      ? products.slice(0, 8)
+      ? products.slice(0, 10)
       : products.filter((p) =>
           p.category?.toLowerCase().includes(tabIdToCategory(activeTab))
-        ).slice(0, 8);
+        ).slice(0, 10);
 
   return (
     <section id="top-products" className="w-full py-8 sm:py-12 lg:py-20 bg-[#FAF9F7] border-t border-[#f0ece5]">
@@ -82,15 +82,15 @@ export default function TopProducts() {
           </div>
         </div>
 
-        {/* 2-Column on Mobile, 4-Column on Desktop Product Grid (With Skeleton Effect) */}
+        {/* 2-Column Mobile, 3-Col Tablet, 5-Column Desktop Product Grid */}
         {isLoading || (status === "loading" && products.length === 0) ? (
-          <ProductGridSkeleton count={4} cols={4} />
+          <ProductGridSkeleton count={10} cols={5} />
         ) : filtered.length === 0 ? (
           <div className="py-12 text-center text-xs text-[#767069]">
             No products found in this category.
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
             {filtered.map((product) => (
               <ProductCard key={product.id || (product as any).slug} product={product} />
             ))}

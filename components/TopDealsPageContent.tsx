@@ -512,6 +512,7 @@ export default function TopDealsPageContent() {
                       src={p.primaryImage || "/images/drop_cut_blue_banner.jpg"}
                       alt={p.title}
                       fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
                       className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     />
                     {discountVal > 0 && (

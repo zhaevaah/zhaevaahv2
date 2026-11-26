@@ -22,6 +22,7 @@ import { useStore } from "../context/StoreContext";
 import { apiPlaceOrder, apiGetAddresses } from "../lib/api";
 import GoogleSignInButton from "./GoogleSignInButton";
 import { initiateRazorpayCheckout } from "../lib/razorpay";
+import PaymentMethodsStrip from "./PaymentMethodsStrip";
 
 const INDIAN_STATES = [
   "Maharashtra",
@@ -194,7 +195,7 @@ export default function CheckoutPageContent() {
             clearCart();
             setIsProcessing(false);
             window.scrollTo({ top: 0, behavior: "smooth" });
-            showToast(`Payment successful! Order #${finalOrderNum} confirmed.`);
+            showToast(`✓ Payment Confirmed via Razorpay Webhook! Order #${finalOrderNum}`);
           },
           onError: (errMsg) => {
             setIsProcessing(false);
@@ -276,6 +277,15 @@ export default function CheckoutPageContent() {
                 <div className="flex justify-between border-b border-[#EAE3D5] pb-2">
                   <span>Razorpay Payment ID:</span>
                   <strong className="text-[#B8933F] font-mono text-[11px]">{confirmedPaymentId}</strong>
+                </div>
+              )}
+              {paymentMethod === "razorpay" && (
+                <div className="flex justify-between border-b border-[#EAE3D5] pb-2 items-center">
+                  <span>Payment Verification:</span>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                    Confirmed by Razorpay Webhook (PAID)
+                  </span>
                 </div>
               )}
               <div className="flex justify-between pt-1 text-sm font-bold text-[#1C1208]">
@@ -629,16 +639,8 @@ export default function CheckoutPageContent() {
                           </p>
 
                           {/* Supported Badges */}
-                          <div className="flex items-center gap-1.5 sm:gap-2 mt-3 flex-wrap text-[10px] text-[#524B43]">
-                            <span className="bg-white border border-[#DDD5C7] px-2 py-0.5 rounded-xs font-semibold shadow-2xs">
-                              UPI • GPay • PhonePe
-                            </span>
-                            <span className="bg-white border border-[#DDD5C7] px-2 py-0.5 rounded-xs font-semibold shadow-2xs">
-                              Visa • Mastercard • RuPay
-                            </span>
-                            <span className="bg-white border border-[#DDD5C7] px-2 py-0.5 rounded-xs font-semibold shadow-2xs">
-                              NetBanking • EMI
-                            </span>
+                          <div className="mt-3.5 max-w-lg">
+                            <PaymentMethodsStrip />
                           </div>
                         </div>
                       </div>
@@ -712,6 +714,7 @@ export default function CheckoutPageContent() {
                         src={item.image}
                         alt={item.title}
                         fill
+                        sizes="64px"
                         className="object-contain"
                       />
                       <span className="absolute -top-1.5 -right-1.5 bg-[#1C1208] text-white text-[10px] font-bold w-4.5 h-4.5 rounded-full flex items-center justify-center">

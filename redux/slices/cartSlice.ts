@@ -15,17 +15,7 @@ const getInitialCart = (): CartItem[] => {
       // ignore
     }
   }
-  return [
-    {
-      id: "prod-1",
-      title: "Real Diamond Jewellery Gold Diamond Ring",
-      price: "₹24,999",
-      priceNum: 24999,
-      image: "/images/product_1_main.png",
-      quantity: 1,
-      selectedSize: "14",
-    },
-  ];
+  return [];
 };
 
 const initialState: CartState = {

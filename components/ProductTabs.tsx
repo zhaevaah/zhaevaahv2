@@ -45,26 +45,32 @@ export default function ProductTabs({ product }: ProductTabsProps) {
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Tab Headers */}
-        <div className="flex items-center justify-center space-x-6 sm:space-x-10 border-b border-[#EAE3D5] mb-10 overflow-x-auto pb-px">
-          {[
-            { id: "desc", label: "Description" },
-            { id: "info", label: "Additional information" },
-            { id: "reviews", label: `Reviews (${p.reviewsCount || 1})` },
-            { id: "shipping", label: "Shipping & Return" },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`pb-4 text-xs sm:text-sm uppercase tracking-wider font-medium transition-all whitespace-nowrap relative ${
-                activeTab === tab.id
-                  ? "text-[#1C1208] font-semibold after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#B8933F]"
-                  : "text-[#767069] hover:text-[#1C1208]"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+        <div className="border-b border-[#EAE3D5] mb-8 sm:mb-12">
+          <div className="flex items-center justify-start sm:justify-center gap-3 sm:gap-6 md:gap-10 overflow-x-auto no-scrollbar scrollbar-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden px-1 sm:px-0">
+            {[
+              { id: "desc", fullLabel: "Description", shortLabel: "Description" },
+              { id: "info", fullLabel: "Additional Information", shortLabel: "Specifications" },
+              { id: "reviews", fullLabel: `Reviews (${p.reviewsCount || 1})`, shortLabel: `Reviews (${p.reviewsCount || 1})` },
+              { id: "shipping", fullLabel: "Shipping & Return", shortLabel: "Shipping" },
+            ].map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`pb-3 pt-1 text-[11px] sm:text-xs md:text-sm uppercase tracking-wider font-semibold transition-all whitespace-nowrap border-b-2 -mb-px flex-shrink-0 cursor-pointer ${
+                    isActive
+                      ? "text-[#B8933F] border-[#B8933F]"
+                      : "text-[#767069] border-transparent hover:text-[#1C1208] hover:border-[#D6CEC1]"
+                  }`}
+                >
+                  <span className="inline sm:hidden">{tab.shortLabel}</span>
+                  <span className="hidden sm:inline">{tab.fullLabel}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Tab 1: Description */}
@@ -117,6 +123,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
                     src={p.spotlightImage || "/images/ring_beckons_banner.jpg"}
                     alt={p.spotlightTitle || "Sterling Silver Rose Gold Love Beckons Ring Collection"}
                     fill
+                    sizes="(max-width: 768px) 100vw, 800px"
                     className="object-contain"
                   />
                 </div>
@@ -131,7 +138,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
             <h3 className="font-montserrat text-lg font-semibold text-[#1C1208] mb-4">
               {p.specificationsTitle || "Specifications & Metallurgy"}
             </h3>
-            <div className="border border-[#EAE3D5] rounded-xs divide-y divide-[#EAE3D5] text-xs">
+            <div className="border border-[#EAE3D5] rounded-xl overflow-hidden divide-y divide-[#EAE3D5] text-xs">
               {specifications.map((spec, i) => (
                 <div key={i} className="grid grid-cols-1 sm:grid-cols-3 py-3 px-4 bg-white even:bg-[#FAF8F5]">
                   <span className="font-medium text-[#1C1208]">{spec.label}</span>
