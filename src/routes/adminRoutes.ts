@@ -25,6 +25,12 @@ import {
   updateAdminOrderMailSettings,
   sendTestEmail,
 } from "../controllers/adminController";
+import {
+  getAdminCoupons,
+  createCoupon,
+  updateCoupon,
+  deleteCoupon,
+} from "../controllers/couponController";
 import { protect, adminOnly } from "../middleware/auth";
 
 const router = Router();
@@ -52,6 +58,12 @@ router.get("/banners", getAdminBanners);
 router.post("/banners", createBanner);
 router.put("/banners/:id", updateBanner);
 router.delete("/banners/:id", deleteBanner);
+
+// Coupon & Voucher Management
+router.get("/coupons", getAdminCoupons);
+router.post("/coupons", createCoupon);
+router.put("/coupons/:id", updateCoupon);
+router.delete("/coupons/:id", deleteCoupon);
 
 // Order & Tracking Management
 router.get("/orders", getAdminOrders);

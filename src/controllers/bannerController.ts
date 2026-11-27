@@ -68,8 +68,50 @@ const FALLBACK_BANNERS = [
     subtitle: "Diamond Bracelets",
     type: "AD_DOUBLE",
     image: "/images/ad_banner_double_source.jpg",
-    link: "/shop?category=Diamond%20Bracelets",
+    link: "/women",
     position: 2,
+    isActive: true,
+  },
+  {
+    id: "top-deal-1",
+    title: "Diwali Fine Gold & Solitaire Edit",
+    subtitle: "Up to 35% Off on BIS 916 Hallmarked Gold & Natural Diamonds",
+    type: "TOP_DEALS",
+    image: "/images/ZhaevaahHero.jpg",
+    mobileImage: "/images/ZhaevaahHero-800.webp",
+    link: "/women",
+    ctaText: "EXPLORE OFFERS",
+    badge: "FESTIVE SPOTLIGHT",
+    discount: "UP TO 35% OFF",
+    position: 1,
+    isActive: true,
+  },
+  {
+    id: "top-deal-2",
+    title: "Bespoke Royal Nizam Bridal Suites",
+    subtitle: "Complimentary 24K Gold Coin with insured express delivery",
+    type: "TOP_DEALS",
+    image: "/images/collection.webp",
+    mobileImage: "/images/collection.webp",
+    link: "/women",
+    ctaText: "CLAIM PRIVILEGE",
+    badge: "LIMITED PRIVILEGE",
+    discount: "FREE 24K COIN",
+    position: 2,
+    isActive: true,
+  },
+  {
+    id: "top-deal-3",
+    title: "Certified Solitaire Diamond Rings",
+    subtitle: "IGI & SGL Certified natural solitaires crafted in 18kt pure gold",
+    type: "TOP_DEALS",
+    image: "/images/hero_woman_hd.jpg",
+    mobileImage: "/images/hero_woman.jpg",
+    link: "/women",
+    ctaText: "VIEW COLLECTION",
+    badge: "ATELIER SELECTION",
+    discount: "EXTRA 5% CODE",
+    position: 3,
     isActive: true,
   },
 ];
@@ -105,6 +147,7 @@ export const getBanners = async (req: Request, res: Response): Promise<void> => 
     }
 
     // Group banners by type for easy frontend consumption
+    const topDealsList = banners.filter((b: any) => b.type === "TOP_DEALS");
     const grouped = {
       hero: banners.filter((b: any) => b.type === "HERO"),
       adDouble: banners.filter((b: any) => b.type === "AD_DOUBLE"),
@@ -112,6 +155,7 @@ export const getBanners = async (req: Request, res: Response): Promise<void> => 
       promoTop: banners.filter((b: any) => b.type === "PROMO_TOP"),
       braceletHotsell: banners.filter((b: any) => b.type === "BRACELET_HOTSELL"),
       dropCut: banners.filter((b: any) => b.type === "DROP_CUT"),
+      topDeals: topDealsList.length > 0 ? topDealsList : FALLBACK_BANNERS.filter((b: any) => b.type === "TOP_DEALS"),
       all: banners,
     };
 
@@ -126,8 +170,65 @@ export const getBanners = async (req: Request, res: Response): Promise<void> => 
       promoTop: FALLBACK_BANNERS.filter((b: any) => b.type === "PROMO_TOP"),
       braceletHotsell: [],
       dropCut: [],
+      topDeals: FALLBACK_BANNERS.filter((b: any) => b.type === "TOP_DEALS"),
       all: FALLBACK_BANNERS,
     };
     res.status(200).json({ success: true, banners: fallbackGrouped, isFallback: true });
   }
 };
+
+export const createBannerDirect = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const {
+      title,
+      subtitle,
+      type = "TOP_DEALS",
+      image,
+      mobileImage,
+      link = "/women",
+      ctaText = "SHOP NOW",
+      badge,
+      discount,
+      position = 0,
+      isActive = true,
+    } = req.body;
+
+    if (!title || !image) {
+      res.status(400).json({ success: false, message: "Title and Image are required for banner slide." });
+      return;
+    }
+
+    const banner = await prisma.banner.create({
+      data: {
+        title: String(title).trim(),
+        subtitle: subtitle ? String(subtitle).trim() : null,
+        type: String(type).toUpperCase(),
+        image: String(image).trim(),
+        mobileImage: mobileImage ? String(mobileImage).trim() : null,
+        link: String(link).trim(),
+        ctaText: String(ctaText).trim(),
+        badge: badge ? String(badge).trim() : null,
+        discount: discount ? String(discount).trim() : null,
+        position: Number(position) || 0,
+        isActive: isActive !== undefined ? Boolean(isActive) : true,
+      },
+    });
+
+    res.status(201).json({ success: true, message: "Banner slide created successfully.", banner });
+  } catch (error: any) {
+    console.error("[Create Banner Direct Error]:", error);
+    res.status(500).json({ success: false, message: error.message || "Failed to create banner slide." });
+  }
+};
+
+export const deleteBannerDirect = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    await prisma.banner.delete({ where: { id } });
+    res.status(200).json({ success: true, message: "Banner slide deleted successfully." });
+  } catch (error: any) {
+    console.error("[Delete Banner Direct Error]:", error);
+    res.status(500).json({ success: false, message: error.message || "Failed to delete banner slide." });
+  }
+};
+

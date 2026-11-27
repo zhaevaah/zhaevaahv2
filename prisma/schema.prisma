@@ -127,6 +127,29 @@ model Banner {
   updatedAt    DateTime @updatedAt
 }
 
+model Coupon {
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  code               String    @unique
+  title              String
+  description        String?
+  festivalName       String?   @default("General") // "Diwali", "Akshaya Tritiya", "Wedding", "Valentine", "General"
+  isFestivalSpecific Boolean   @default(false)
+  discountType       String    @default("PERCENTAGE") // "PERCENTAGE" | "FLAT"
+  discountValue      Float     @default(10)
+  maxDiscountAmount  Float?    // Cap limit for percentage discounts, e.g. 5000
+  minOrderValue      Float?    @default(0) // Minimum order value required
+  usageLimitPerUser  Int?      @default(1) // Limit per user
+  usageLimitTotal    Int?      // Total overall limit
+  usedCount          Int       @default(0)
+  startDate          DateTime? @default(now())
+  endDate            DateTime? // Expiry date / festival timeline
+  isActive           Boolean   @default(true)
+  showInTopDeals     Boolean   @default(true)
+  badge              String?   // e.g. "Flat 20% OFF", "Extra 5% OFF"
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
 model Order {
   id                String   @id @default(auto()) @map("_id") @db.ObjectId
   orderNumber       String   @unique
