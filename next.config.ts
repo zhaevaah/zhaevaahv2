@@ -50,8 +50,13 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/shop",
+        destination: "/women",
+        permanent: true,
+      },
+      {
         source: "/products",
-        destination: "/shop",
+        destination: "/women",
         permanent: true,
       },
       {

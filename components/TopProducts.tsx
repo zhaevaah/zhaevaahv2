@@ -45,7 +45,7 @@ export default function TopProducts() {
         ).slice(0, 10);
 
   return (
-    <section id="top-products" className="w-full py-8 sm:py-12 lg:py-20 bg-[#FAF9F7] border-t border-[#f0ece5]">
+    <section id="top-products" className="w-full py-8 sm:py-12 lg:py-20 bg-[#FAF9F7] border-y border-[#EAE3D5]/80">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading & Subtitle */}

@@ -6,14 +6,15 @@ import { Star, ShieldCheck, Truck, RotateCcw, Award } from "lucide-react";
 import { DetailedProduct } from "../data/products";
 
 interface ProductTabsProps {
-  product: DetailedProduct;
+  product?: DetailedProduct | null;
 }
 
 export default function ProductTabs({ product }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState<"desc" | "info" | "reviews" | "shipping">("desc");
-  const [productData, setProductData] = useState<any>(product);
+  const [productData, setProductData] = useState<any>(product || {});
 
   useEffect(() => {
+    if (!product) return;
     try {
       const saved =
         localStorage.getItem(`zhaevaah_product_override_${product.id}`) ||
@@ -23,7 +24,9 @@ export default function ProductTabs({ product }: ProductTabsProps) {
         setProductData((prev: any) => ({ ...prev, ...parsed }));
       }
     } catch {}
-  }, [product.id, product.slug]);
+  }, [product?.id, product?.slug]);
+
+  if (!product) return null;
 
   const p = { ...product, ...productData };
 
@@ -41,7 +44,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
     : product.specifications || [];
 
   return (
-    <section className="w-full bg-white border-t border-[#EAE6DF] py-12 lg:py-16 font-poppins">
+    <section className="w-full bg-[#FAF9F7] border-y border-[#EAE3D5]/80 py-12 lg:py-16 font-poppins">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Tab Headers */}
@@ -98,7 +101,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
               {/* Luxury Hallmark Highlights */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3">
                 {hallmarkHighlights.map((highlight, idx) => (
-                  <div key={idx} className="flex items-center gap-2.5 p-2 bg-[#FAF8F5] rounded-xs border border-[#EAE3D5]">
+                  <div key={idx} className="flex items-center gap-2.5 p-2 bg-white rounded-xs border border-[#EAE3D5]">
                     <Image
                       src="/favicon-32x32.png"
                       alt="•"
@@ -114,7 +117,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
 
             {/* Feature Banner */}
             <div className="pt-8">
-              <div className="bg-[#FAF9F7] rounded-xs border border-[#EAE3D5] p-6 sm:p-10 text-center overflow-hidden">
+              <div className="bg-white rounded-xs border border-[#EAE3D5] p-6 sm:p-10 text-center overflow-hidden">
                 <h3 className="font-montserrat text-2xl sm:text-3xl lg:text-[36px] font-normal text-[#1C1208] tracking-tight mb-8">
                   {p.spotlightTitle || "Sterling Silver Rose Gold Love Beckons Ring"}
                 </h3>
@@ -178,7 +181,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
             </div>
 
             <div className="space-y-4">
-              <div className="p-4 bg-[#FAF8F5] border border-[#EAE3D5] rounded-xs">
+              <div className="p-4 bg-white border border-[#EAE3D5] rounded-xs">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-semibold text-[#1C1208]">Pooja Singhania</span>

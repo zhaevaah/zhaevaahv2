@@ -28,7 +28,7 @@ export default function GenderCollectionSection() {
   const menTrending = mensList.slice(0, 5);
 
   return (
-    <section className="w-full py-10 sm:py-16 lg:py-20 bg-[#FAF9F7] border-y border-[#EAE3D5]/70">
+    <section className="w-full py-10 sm:py-16 lg:py-20 bg-white">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* ============================================================== */}

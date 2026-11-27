@@ -85,9 +85,8 @@ export default function MobileBottomNav() {
           className={`w-4.5 h-4.5 ${isWomenActive ? "text-[#B8933F]" : "text-[#6E675F]"}`}
           strokeWidth={isWomenActive ? 2.5 : 2}
         />
-        <span className="text-[9px] tracking-wider uppercase mt-0.5 font-medium flex items-center gap-0.5">
-          <span>Women</span>
-          <span className="text-[8px] font-bold">♀</span>
+        <span className="text-[9px] tracking-wider uppercase mt-0.5 font-medium">
+          Women
         </span>
       </Link>
 
@@ -104,9 +103,8 @@ export default function MobileBottomNav() {
           className={`w-4.5 h-4.5 ${isMenActive ? "text-[#B8933F]" : "text-[#6E675F]"}`}
           strokeWidth={isMenActive ? 2.5 : 2}
         />
-        <span className="text-[9px] tracking-wider uppercase mt-0.5 font-medium flex items-center gap-0.5">
-          <span>Men</span>
-          <span className="text-[8px] font-bold">♂</span>
+        <span className="text-[9px] tracking-wider uppercase mt-0.5 font-medium">
+          Men
         </span>
       </Link>
 

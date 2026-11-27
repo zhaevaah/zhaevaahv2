@@ -50,7 +50,7 @@ export default function Footer() {
       </div>
 
       {/* ── 2. Main 5-Column Footer with Signature Brand Watermark ── */}
-      <div className="relative w-full overflow-hidden bg-white">
+      <div className="relative w-full overflow-hidden bg-[#FAF9F7] border-t border-[#EAE3D5]">
         {/* Luxury Logo Watermark */}
         <div
           className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-0"

@@ -8,6 +8,7 @@ import LatestProducts from "../components/LatestProducts";
 import TopProducts from "../components/TopProducts";
 import AdBannerDouble from "../components/AdBannerDouble";
 import TopSoldWeekCarousel from "../components/TopSoldWeekCarousel";
+import LifestyleEditsSection from "../components/LifestyleEditsSection";
 import ClientReviews from "../components/ClientReviews";
 import RoseGoldBraceletBanner from "../components/RoseGoldBraceletBanner";
 import Footer from "../components/Footer";
@@ -51,6 +52,9 @@ export default function Home() {
 
           {/* 8. Top Sold Product of This Week with Carousel (as in Image 2) */}
           <TopSoldWeekCarousel />
+
+          {/* 02 | Wear It Where Life Happens - Lifestyle Expanding Edits */}
+          <LifestyleEditsSection />
 
           {/* 9. Clients Review Section (What Our Clients Say as in Image 3) */}
           <ClientReviews />

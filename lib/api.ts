@@ -424,4 +424,107 @@ export const apiDeleteImage = async (fileId: string) => {
   return request(`/upload/${fileId}`, { method: "DELETE" });
 };
 
+// ==========================================
+// 7. COUPONS & FESTIVAL VOUCHERS
+// ==========================================
+
+export interface CouponItem {
+  id: string;
+  code: string;
+  title: string;
+  description?: string;
+  festivalName?: string;
+  isFestivalSpecific?: boolean;
+  discountType: "PERCENTAGE" | "FLAT";
+  discountValue: number;
+  maxDiscountAmount?: number | null;
+  minOrderValue?: number | null;
+  usageLimitPerUser?: number | null;
+  usageLimitTotal?: number | null;
+  usedCount?: number;
+  startDate?: string;
+  endDate?: string | null;
+  isActive: boolean;
+  showInTopDeals: boolean;
+  badge?: string;
+  createdAt?: string;
+}
+
+export const apiGetCoupons = async (params: { festivalOnly?: boolean; topDealsOnly?: boolean } = {}) => {
+  const query = new URLSearchParams();
+  if (params.festivalOnly) query.append("festivalOnly", "true");
+  if (params.topDealsOnly) query.append("topDealsOnly", "true");
+  const qStr = query.toString() ? `?${query.toString()}` : "";
+  return request(`/coupons${qStr}`);
+};
+
+export const apiValidateCoupon = async (code: string, subtotal: number) => {
+  return request("/coupons/validate", {
+    method: "POST",
+    body: JSON.stringify({ code, subtotal }),
+  });
+};
+
+export const apiGetAdminCoupons = async () => {
+  return request("/coupons/admin");
+};
+
+export const apiCreateCoupon = async (couponData: Partial<CouponItem>) => {
+  return request("/coupons/admin", {
+    method: "POST",
+    body: JSON.stringify(couponData),
+  });
+};
+
+export const apiUpdateCoupon = async (id: string, couponData: Partial<CouponItem>) => {
+  return request(`/coupons/admin/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(couponData),
+  });
+};
+
+export const apiDeleteCoupon = async (id: string) => {
+  return request(`/coupons/admin/${id}`, {
+    method: "DELETE",
+  });
+};
+
+// ==========================================
+// 8. BANNER MANAGEMENT
+// ==========================================
+
+export const apiCreateBanner = async (bannerData: any) => {
+  const res = await request("/admin/banners", {
+    method: "POST",
+    body: JSON.stringify(bannerData),
+  });
+  if (!res.success) {
+    return request("/banners/admin", {
+      method: "POST",
+      body: JSON.stringify(bannerData),
+    });
+  }
+  return res;
+};
+
+export const apiUpdateBanner = async (id: string, bannerData: any) => {
+  return request(`/admin/banners/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(bannerData),
+  });
+};
+
+export const apiDeleteBanner = async (id: string) => {
+  const res = await request(`/admin/banners/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.success) {
+    return request(`/banners/admin/${id}`, {
+      method: "DELETE",
+    });
+  }
+  return res;
+};
+
+
 

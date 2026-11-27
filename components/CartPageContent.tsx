@@ -79,7 +79,7 @@ export default function CartPageContent() {
             Discover timeless 18kt hallmarked gold creations and certified natural diamond jewelry designed for your dynamic lifestyle.
           </p>
           <Link
-            href="/shop"
+            href="/women"
             className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#B8933F] hover:bg-[#A37E2E] text-white text-xs uppercase font-medium tracking-wider rounded-xs transition-colors shadow-xs"
           >
             <span>Explore Fine Jewellery</span>

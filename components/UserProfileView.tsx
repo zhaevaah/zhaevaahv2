@@ -1035,7 +1035,7 @@ function ProfileContentInner() {
                           You have no pending shipments. Place an order to enjoy insured door-to-door delivery with BIS hallmark verification.
                         </p>
                         <Link
-                          href="/shop"
+                          href="/women"
                           className="mt-4 inline-flex items-center gap-2 px-5 py-2 bg-[#B8933F] hover:bg-[#A37E2E] text-white text-xs uppercase font-medium tracking-wider rounded-xs transition-colors"
                         >
                           <span>Explore Collections</span>
@@ -1156,7 +1156,7 @@ function ProfileContentInner() {
                           You haven't placed any certified jewellery orders yet. Discover our latest collections and enjoy insured white-glove delivery across India.
                         </p>
                         <Link
-                          href="/shop"
+                          href="/women"
                           className="mt-5 inline-flex items-center gap-2 px-6 py-2.5 bg-[#B8933F] hover:bg-[#A37E2E] text-white text-xs uppercase font-medium tracking-wider rounded-xs transition-colors"
                         >
                           <RotateCcw className="w-3.5 h-3.5" />
@@ -1321,7 +1321,7 @@ function ProfileContentInner() {
                               </div>
 
                               <Link
-                                href="/shop"
+                                href="/women"
                                 className="inline-flex items-center gap-1.5 px-5 py-2 bg-[#B8933F] hover:bg-[#A37E2E] text-white text-xs uppercase font-medium tracking-wider rounded-xs transition-colors"
                               >
                                 <RotateCcw className="w-3.5 h-3.5" />

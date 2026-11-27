@@ -22,7 +22,7 @@ export default function AdBannerDouble() {
               </h3>
               <div>
                 <Link
-                  href="/shop?category=Necklaces%20%26%20Pendants"
+                  href="/women?category=Necklaces%20%26%20Pendants"
                   className="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 bg-[#B8933F] hover:bg-[#9E792B] text-white text-[10px] sm:text-xs uppercase font-medium tracking-[0.16em] rounded-xs shadow-xs transition-all active:scale-95"
                 >
                   SHOP NOW
@@ -56,7 +56,7 @@ export default function AdBannerDouble() {
               </h3>
               <div>
                 <Link
-                  href="/shop?category=Necklaces%20%26%20Pendants"
+                  href="/women?category=Diamond%20Rings"
                   className="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 bg-[#B8933F] hover:bg-[#9E792B] text-white text-[10px] sm:text-xs uppercase font-medium tracking-[0.16em] rounded-xs shadow-xs transition-all active:scale-95"
                 >
                   SHOP NOW

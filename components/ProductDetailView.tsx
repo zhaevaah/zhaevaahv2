@@ -17,31 +17,34 @@ import {
   Check,
   ShoppingBag,
 } from "lucide-react";
-import { DetailedProduct, FEATURED_DETAILED_PRODUCT, getProductStock } from "../data/products";
+import { DetailedProduct, getProductStock } from "../data/products";
 import { useStore } from "../context/StoreContext";
 
 interface ProductDetailViewProps {
-  product?: DetailedProduct;
+  product?: DetailedProduct | null;
 }
 
 export default function ProductDetailView({
-  product = FEATURED_DETAILED_PRODUCT,
+  product,
 }: ProductDetailViewProps) {
   const { addToCart, toggleWishlist, isInWishlist, showToast } = useStore();
 
-  const [productData, setProductData] = useState(product);
+  const [productData, setProductData] = useState<Partial<DetailedProduct>>({});
 
   useEffect(() => {
+    if (!product) return;
     try {
       const saved =
         localStorage.getItem(`zhaevaah_product_override_${product.id}`) ||
         localStorage.getItem(`zhaevaah_product_override_${product.slug}`);
       if (saved) {
         const parsed = JSON.parse(saved);
-        setProductData((prev) => ({ ...prev, ...parsed }));
+        setProductData(parsed);
       }
     } catch {}
-  }, [product.id, product.slug]);
+  }, [product?.id, product?.slug]);
+
+  if (!product) return null;
 
   const p = { ...product, ...productData };
 

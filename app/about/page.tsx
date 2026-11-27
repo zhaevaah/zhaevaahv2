@@ -102,7 +102,7 @@ function AboutPageContent() {
 
               <div className="pt-4">
                 <Link
-                  href="/shop"
+                  href="/women"
                   className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#B8933F] hover:bg-[#9E792B] text-white text-xs uppercase font-bold tracking-[0.18em] rounded-xs shadow-md transition-all active:scale-95"
                 >
                   <span>Explore The Catalog</span>

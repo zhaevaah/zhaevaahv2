@@ -26,7 +26,7 @@ const SLIDES: Slide[] = [
     id: 1,
     image: "/images/hero_woman_hd.jpg",
     mobileImage: "/images/hero_woman.jpg",
-    link: "/shop",
+    link: "/women",
     title: "Woman In Golden Rings And Necklaces",
     imageAlt: "Woman In Golden Rings And Necklaces",
   },
@@ -34,7 +34,7 @@ const SLIDES: Slide[] = [
     id: 2,
     image: "/images/ZhaevaahHero.jpg",
     mobileImage: "/images/ZhaevaahHero-800.webp",
-    link: "/shop?category=Solitaire%20Rings",
+    link: "/women?category=Solitaire%20Rings",
     title: "Pure Brilliance Solitaire Collection",
     imageAlt: "Pure Brilliance Solitaire Collection",
   },
@@ -42,7 +42,7 @@ const SLIDES: Slide[] = [
     id: 3,
     image: "/images/collection.webp",
     mobileImage: "/images/collection.webp",
-    link: "/shop?category=Wedding%20%26%20Bridal%20Sets",
+    link: "/women?category=Wedding%20%26%20Bridal%20Sets",
     title: "Handcrafted Royal Jewellery Symphony",
     imageAlt: "Handcrafted Royal Jewellery Symphony",
   },
@@ -72,7 +72,7 @@ export default function HeroCarousel() {
             id: b.id || i + 1,
             image: b.image || "/images/hero_woman_hd.jpg",
             mobileImage: b.mobileImage || b.image || "/images/hero_woman_hd.jpg",
-            link: b.link || b.buttonLink || "/shop",
+            link: (b.link ? b.link.replace("/shop", "/women") : "") || b.buttonLink || "/women",
             title: b.title || `Hero Slide ${i + 1}`,
             imageAlt: b.title || `Hero Slide ${i + 1}`,
           }))
@@ -93,7 +93,7 @@ export default function HeroCarousel() {
                 id: s.id || i + 1,
                 image: s.image || "/images/hero_woman_hd.jpg",
                 mobileImage: s.mobileImage || s.image || "/images/hero_woman.jpg",
-                link: s.link || s.buttonLink || "/shop",
+                link: (s.link ? s.link.replace("/shop", "/women") : "") || s.buttonLink || "/women",
                 title: s.title || `Hero Slide ${i + 1}`,
                 imageAlt: s.title || `Hero Slide ${i + 1}`,
               }))
@@ -166,7 +166,7 @@ export default function HeroCarousel() {
       <div className="relative w-full aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] lg:aspect-[2.4/1] overflow-hidden bg-[#181512]">
         {slides.map((slide, index) => {
           const isCurrent = index === currentSlide;
-          const slideHref = slide.link || slide.buttonLink || "/shop";
+          const slideHref = slide.link || slide.buttonLink || "/women";
 
           return (
             <Link
@@ -247,7 +247,7 @@ export default function HeroCarousel() {
             </button>
 
             {/* ── Dot Indicators ── */}
-            <div className="absolute bottom-3 sm:bottom-4 md:bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center space-x-2 bg-black/30 backdrop-blur-xs px-3 py-1.5 rounded-full">
+            <div className="absolute bottom-2 sm:bottom-3 md:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center space-x-1.5 sm:space-x-2 bg-black/40 backdrop-blur-xs px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-xs">
               {slides.map((_, index) => (
                 <button
                   key={index}
@@ -260,8 +260,8 @@ export default function HeroCarousel() {
                   aria-label={`Go to slide ${index + 1}`}
                   className={`transition-all duration-300 rounded-full cursor-pointer ${
                     index === currentSlide
-                      ? "w-6 sm:w-7 h-2 bg-[#B8933F]"
-                      : "w-2 h-2 bg-white/60 hover:bg-white"
+                      ? "w-4 sm:w-5 h-1 sm:h-1.5 bg-[#B8933F]"
+                      : "w-1 sm:w-1.5 h-1 sm:h-1.5 bg-white/60 hover:bg-white"
                   }`}
                 />
               ))}

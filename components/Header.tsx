@@ -37,11 +37,7 @@ export default function Header() {
   const isHomeActive = isHomePage;
   const isWomenActive = pathname.startsWith("/women");
   const isMenActive = pathname.startsWith("/men");
-  const isShopActive =
-    (pathname.startsWith("/shop") &&
-      !pathname.includes("Top%20Deals") &&
-      !pathname.includes("deals")) ||
-    pathname.startsWith("/product");
+  const isShopActive = pathname.startsWith("/product");
   const isDealsActive =
     pathname.includes("Top%20Deals") || pathname.includes("deals");
 

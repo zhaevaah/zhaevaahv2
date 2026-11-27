@@ -331,9 +331,8 @@ function MenContentInner() {
               Home
             </Link>
             <span>/</span>
-            <span className="font-semibold text-[#1C1208] inline-flex items-center gap-1">
-              <span>Men&apos;s Collection</span>
-              <span className="text-[#B8933F] font-bold text-xs">♂</span>
+            <span className="font-semibold text-[#1C1208]">
+              Men&apos;s Collection
             </span>
             {selectedCategory !== "All Categories" && (
               <>

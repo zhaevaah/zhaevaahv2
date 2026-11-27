@@ -19,35 +19,35 @@ const CIRCULAR_CATEGORIES: CircularCategoryItem[] = [
     name: "Rings",
     tagline: "Diamond & Gold",
     image: "/category/ring.webp",
-    link: "/shop?category=Diamond%20Rings",
+    link: "/women?category=Diamond%20Rings",
   },
   {
     id: "bracelets",
     name: "Bracelets",
     tagline: "Tennis & Charm",
     image: "/category/bracelet.webp",
-    link: "/shop?category=Diamond%20Bracelets",
+    link: "/women?category=Diamond%20Bracelets",
   },
   {
     id: "neck-chains",
     name: "Neck Chains",
     tagline: "Pendants & Chains",
     image: "/category/chain.webp",
-    link: "/shop?category=Necklaces%20%26%20Pendants",
+    link: "/women?category=Necklaces%20%26%20Pendants",
   },
   {
     id: "necklace-sets",
     name: "Necklace Sets",
     tagline: "Bridal & Heritage",
     image: "/category/necklace.webp",
-    link: "/shop?category=Wedding%20%26%20Bridal%20Sets",
+    link: "/women?category=Wedding%20%26%20Bridal%20Sets",
   },
   {
     id: "bangles",
     name: "Bangles",
     tagline: "Artisanal 18kt",
     image: "/category/bangles.webp",
-    link: "/shop?category=Diamond%20Bracelets",
+    link: "/women?category=Diamond%20Bracelets",
   },
   {
     id: "mens-rings",
@@ -80,21 +80,21 @@ const DEFAULT_GRID = [
     subtitle: "DIAMOND RINGS",
     title: "Yellow Gold & Diamond Ring",
     image: "/images/category_rings.jpg",
-    link: "/shop?category=Diamond%20Rings",
+    link: "/women?category=Diamond%20Rings",
     cta: "SHOP NOW",
   },
   {
     subtitle: "DIAMOND BRACELETS",
     title: "Infinity Diamond Bracelet",
     image: "/images/category_bracelet.jpg",
-    link: "/shop?category=Diamond%20Bracelets",
+    link: "/women?category=Diamond%20Bracelets",
     cta: "SHOP NOW",
   },
   {
     subtitle: "DIAMOND PENDANT",
     title: "Teardrop Diamond Pendant",
     image: "/images/category_pendant.jpg",
-    link: "/shop?category=Diamond%20Pendant",
+    link: "/women?category=Necklaces%20%26%20Pendants",
     cta: "SHOP NOW",
   },
 ];
@@ -109,7 +109,11 @@ export default function CategoryGrid() {
         if (saved) {
           const parsed = JSON.parse(saved);
           if (Array.isArray(parsed) && parsed.length >= 3) {
-            setGrid(parsed);
+            const sanitized = parsed.map((item: any) => ({
+              ...item,
+              link: item.link ? item.link.replace("/shop", "/women") : "/women",
+            }));
+            setGrid(sanitized);
           }
         }
       } catch {}

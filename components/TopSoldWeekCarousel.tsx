@@ -35,7 +35,7 @@ export default function TopSoldWeekCarousel() {
   };
 
   return (
-    <section id="top-sold-week" className="w-full py-6 sm:py-10 md:py-14 bg-[#FBF9F6]">
+    <section id="top-sold-week" className="w-full py-8 sm:py-12 md:py-16 bg-[#FAF9F7] border-y border-[#EAE3D5]/80">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Curated Carousel Header & Navigation Controls */}
         <div className="flex items-center justify-between mb-4 sm:mb-8">

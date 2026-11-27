@@ -9,7 +9,7 @@ const DEFAULT_BRACELET_BANNER = {
   subtitle: "DIAMOND BRACELETS",
   title: "Rose Gold With Diamond Hotsell Bracelet",
   image: "/images/bracelet_hotsell_banner.jpg",
-  link: "/shop?category=Diamond%20Bracelets",
+  link: "/women?category=Diamond%20Bracelets",
   cta: "SHOP NOW",
 };
 
@@ -35,7 +35,7 @@ export default function RoseGoldBraceletBanner() {
   }, []);
 
   return (
-    <section className="w-full pb-8 sm:pb-14 md:pb-20 bg-white">
+    <section className="w-full py-12 sm:py-16 md:py-20 lg:py-24 bg-white">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="group relative bg-[#F7F6F4] rounded-xs border border-[#eae6de]/70 overflow-hidden min-h-[140px] sm:min-h-[200px] md:min-h-[280px] flex items-center">
           

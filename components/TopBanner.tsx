@@ -22,7 +22,7 @@ const DEFAULT_PROMOS: PromoOffer[] = [
     headline: "Save 10% When You Join ZHAEVAAH, Use Promo",
     shortHeadline: "Save 10% With Code",
     promoCode: "ZHAEVAAH10",
-    link: "/shop",
+    link: "/women",
   },
   {
     id: "diwali-festive",
@@ -30,7 +30,7 @@ const DEFAULT_PROMOS: PromoOffer[] = [
     headline: "Save 20% on Festive Diamond Jewellery, Use Promo",
     shortHeadline: "Save 20% On Diamonds",
     promoCode: "DIWALI20",
-    link: "/shop?category=Diamond%20Rings",
+    link: "/women?category=Diamond%20Rings",
   },
   {
     id: "wedding-rush",
@@ -98,7 +98,7 @@ export default function TopBanner() {
             badge: b.badge || "SPECIAL SALE",
             headline: b.title || "EXQUISITE FINE JEWELLERY PROMOTION",
             promoCode: b.discount ? b.discount.replace(/[^A-Za-z0-9]/g, "").toUpperCase() : "ZHAEVAAH",
-            link: b.link || "/shop",
+            link: b.link || "/women",
           }));
           setPromos([...dynamicPromos, ...DEFAULT_PROMOS]);
         }

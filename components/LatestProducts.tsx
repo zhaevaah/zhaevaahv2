@@ -20,7 +20,7 @@ export default function LatestProducts() {
   const latestProducts = products.slice(0, 5);
 
   return (
-    <section id="latest-products" className="w-full pt-6 sm:pt-8 md:pt-10 pb-12 sm:pb-16 md:pb-20 bg-white">
+    <section id="latest-products" className="w-full py-10 sm:py-14 md:py-18 bg-[#FAF9F7] border-y border-[#EAE3D5]/80">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading & Subtitle */}

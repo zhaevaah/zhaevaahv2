@@ -17,11 +17,11 @@ export default function PaymentMethodsStrip({
   const visaGrad0Id = `visa-grad0-${safeId}`;
   const visaGrad1Id = `visa-grad1-${safeId}`;
 
-  const iconSizeClass = compact ? "w-7 h-7" : "w-8 h-8";
+  const iconSizeClass = compact ? "w-6 h-6 sm:w-7 sm:h-7" : "w-7 h-7 sm:w-8 sm:h-8";
 
   return (
     <div
-      className={`rounded-2xl border border-slate-200/90 bg-slate-50/60 p-2.5 sm:p-3 flex items-center justify-between sm:justify-around gap-2 overflow-x-auto select-none ${className}`}
+      className={`rounded-xl border border-slate-200/90 bg-slate-50/70 p-2 sm:p-2.5 flex items-center justify-between gap-1.5 sm:gap-2 w-full max-w-full overflow-hidden select-none ${className}`}
     >
       {/* UPI */}
       <div

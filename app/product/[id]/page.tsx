@@ -3,31 +3,16 @@ import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
 import ProductDetailView from "../../../components/ProductDetailView";
 import ProductTabs from "../../../components/ProductTabs";
+import LifestyleEditsSection from "../../../components/LifestyleEditsSection";
+import ClientReviews from "../../../components/ClientReviews";
 import RelatedProducts from "../../../components/RelatedProducts";
 import CartDrawer from "../../../components/CartDrawer";
 import QuickViewModal from "../../../components/QuickViewModal";
 import SearchModal from "../../../components/SearchModal";
 import Toast from "../../../components/Toast";
 import { StoreProvider } from "../../../context/StoreContext";
-import { getProductById } from "../../../data/products";
-
-export function generateStaticParams() {
-  return [
-    { id: "blue-topaz-ring" },
-    { id: "prod-1" },
-    { id: "prod-2" },
-    { id: "prod-3" },
-    { id: "prod-4" },
-    { id: "top-1" },
-    { id: "top-2" },
-    { id: "top-3" },
-    { id: "top-4" },
-    { id: "week-1" },
-    { id: "week-2" },
-    { id: "week-3" },
-    { id: "week-4" },
-  ];
-}
+import { apiGetProduct } from "../../../lib/api";
+import { DetailedProduct } from "../../../data/products";
 
 export default async function DynamicProductPage({
   params,
@@ -35,7 +20,16 @@ export default async function DynamicProductPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const product = getProductById(id);
+  let product: DetailedProduct | null = null;
+
+  try {
+    const res = await apiGetProduct(id);
+    if (res.success && res.product) {
+      product = res.product as DetailedProduct;
+    }
+  } catch (err) {
+    console.warn("Could not fetch product from backend API:", err);
+  }
 
   return (
     <StoreProvider>
@@ -48,9 +42,30 @@ export default async function DynamicProductPage({
 
         {/* Dynamic Product Detail Content */}
         <main className="flex-1">
-          <ProductDetailView product={product} />
-          <ProductTabs product={product} />
-          <RelatedProducts />
+          {product ? (
+            <>
+              <ProductDetailView product={product} />
+              <ProductTabs product={product} />
+              <LifestyleEditsSection />
+              <ClientReviews />
+              <RelatedProducts />
+            </>
+          ) : (
+            <div className="max-w-xl mx-auto py-24 px-4 text-center">
+              <h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#1C1208] mb-3">
+                Product Not Found
+              </h2>
+              <p className="text-sm text-[#767069] mb-6 font-light">
+                The requested jewellery piece does not exist in our active vault or has been removed.
+              </p>
+              <a
+                href="/women"
+                className="px-6 py-3 bg-[#B8933F] hover:bg-[#D4AF37] text-white text-xs font-semibold uppercase tracking-wider rounded-full inline-block transition-all shadow-md"
+              >
+                Explore Women&apos;s Collection
+              </a>
+            </div>
+          )}
         </main>
 
         {/* Footer */}
